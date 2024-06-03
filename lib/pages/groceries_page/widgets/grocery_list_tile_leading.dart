@@ -5,7 +5,7 @@ class ListTileLeading extends StatelessWidget {
       {super.key, required this.itemName, required this.totalQuantity});
   final String itemName;
   final int totalQuantity;
-  static const _boxWidth = 0.64;
+  static const _boxWidth = 0.5;
   static const _boxHeight = 0.1;
   @override
   Widget build(BuildContext context) {

@@ -34,7 +34,8 @@ class AddNewItemCenterDesign extends ConsumerWidget {
             )),
         Expanded(
             flex: 1,
-            child: Center(
+            child: Align(
+              alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(bottom: height * 0.035),
                 child: DropdownMenu(
@@ -43,6 +44,8 @@ class AddNewItemCenterDesign extends ConsumerWidget {
                     width: width * 0.4,
                     textStyle: const TextStyle(color: Colors.white),
                     inputDecorationTheme: const InputDecorationTheme(
+                        suffixIconColor: Colors.white,
+                        iconColor: Colors.white,
                         hintStyle: TextStyle(color: Colors.white),
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),

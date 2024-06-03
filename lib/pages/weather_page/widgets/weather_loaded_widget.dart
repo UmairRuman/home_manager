@@ -20,16 +20,16 @@ class WeatherLoadedWidget extends StatelessWidget {
   final String cityName, icon, main, descrp;
   final int temperature, humidity, maxTemp, minTemp;
   //positioning values
-  static const cityNameSpacingFromTop = 0.18;
-  static const tempSpacingFromTop = 0.23;
-  static const imageSpacingFromTop = 0.1;
-  static const descriptionSpacingFromTop = 0.3;
+  static const cityNameSpacingFromTop = 0.15;
+  static const tempSpacingFromTop = 0.2;
+  static const imageSpacingFromTop = 0.07;
+  static const descriptionSpacingFromTop = 0.26;
   static const cityNameSpacingFromLeft = 0.1;
   static const tempSpacingFromLeft = 0.1;
   static const imageSpacingFromRight = 0.1;
   static const descriptionSpacingFromRight = 0.21;
   static const infoBoxSpacingFromRight = 0.1;
-  static const infoBoxSpacingFromBottom = kBottomNavigationBarHeight;
+  static const infoBoxSpacingFromBottom = 0.13;
   //image box
   static const imageWidthAndHeight = 0.3;
   @override
@@ -84,7 +84,7 @@ class WeatherLoadedWidget extends StatelessWidget {
               right: width * descriptionSpacingFromRight,
               child: Text(main)),
           Positioned(
-              bottom:  infoBoxSpacingFromBottom,
+              bottom: height * infoBoxSpacingFromBottom,
               right: width * infoBoxSpacingFromRight,
               child: WeatherInfoContainer(
                 humidity: humidity,

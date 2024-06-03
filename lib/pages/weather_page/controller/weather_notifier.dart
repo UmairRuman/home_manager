@@ -10,9 +10,11 @@ class WeatherNotifier extends Notifier<WeatherApiState> {
   final TextEditingController weatherController = TextEditingController();
   @override
   WeatherApiState build() {
-    ref.onDispose(() {
-          weatherController.dispose();
-        },);
+    ref.onDispose(
+      () {
+        weatherController.dispose();
+      },
+    );
     return InitialState();
   }
 

@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UtiiltiesPageList extends ConsumerWidget {
   const UtiiltiesPageList({super.key});
+  static const _updateBtnText = 'Update bill';
+  static const _deleteBtnText = 'Delete bill';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,7 +57,7 @@ class UtiiltiesPageList extends ConsumerWidget {
                       AppCommonButton(
                           width: width * 0.4,
                           backgroundColor: Colors.blue,
-                          buttonText: 'update bill',
+                          buttonText: _updateBtnText,
                           onClick: () {
                             controller.listItemUpdate(context, index);
                           },
@@ -63,7 +65,7 @@ class UtiiltiesPageList extends ConsumerWidget {
                       AppCommonButton(
                           width: width * 0.4,
                           backgroundColor: Colors.red,
-                          buttonText: 'Delete bill',
+                          buttonText: _deleteBtnText,
                           onClick: () {
                             controller.listItemDelete(context, index);
                           },
