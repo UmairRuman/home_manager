@@ -36,15 +36,19 @@ class LoginPageController extends Notifier<LoginPageState> {
 
   // validator for username field
   String? validatorForUsernameField(String? value) {
+    username = sharedData
+        .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey);
     if (value == '' && value == null) {
       return 'Required field is empty';
-    } else if (username != null) {
-      username != value ? 'user not exists' : null;
+    } else if (username != value) {
+      'user not exists';
     }
     return null;
   }
 
   String? validatorForPasswordField(String? value) {
+    password = sharedData
+        .getString(SharedPreferencesConstant.kSharedPreferencePasswordKey);
     if (validatorForUsernameField(usernameController.text) != null) {
       return '';
     } else if (value == null && value == '') {

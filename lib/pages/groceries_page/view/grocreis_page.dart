@@ -10,8 +10,8 @@ class GroceryPage extends ConsumerWidget {
 
   static DummyList dummyList = DummyList();
 
-  static const _buttonSpacingFromRight = 0.05;
-  static const _buttonSpacingFromBottom = 0.02;
+  static const _buttonSpacingFromRight = 0.1;
+  static const _buttonSpacingFromBottom = 0.13;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(quantitiesProvider);

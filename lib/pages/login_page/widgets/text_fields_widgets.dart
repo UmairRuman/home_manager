@@ -19,9 +19,7 @@ class UsernameTextFormField extends ConsumerWidget {
       borderRadius: size.width * 0.06,
       controller: controller.usernameController,
       label: textFieldLabel,
-      validator: (value) {
-        return value != '' && value != null ? null : 'required field is empty';
-      },
+      validator: controller.validatorForUsernameField,
     );
   }
 }
@@ -39,11 +37,7 @@ class PasswordTextFormField extends ConsumerWidget {
       controller: controller.passwordController,
       prefixIcon: Icons.lock,
       label: textFieldLabel,
-      validator: (value) {
-        return value != null && value != ''
-            ? null
-            : 'requried fields are empty';
-      },
+      validator: controller.validatorForPasswordField,
     );
   }
 }
