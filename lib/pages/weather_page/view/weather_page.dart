@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_project_home_manager/pages/error_page/error_page.dart';
 import 'package:flutter_project_home_manager/pages/weather_page/controller/states.dart';
 import 'package:flutter_project_home_manager/pages/weather_page/controller/weather_notifier.dart';
 import 'package:flutter_project_home_manager/pages/weather_page/widgets/get_weather_button.dart';
