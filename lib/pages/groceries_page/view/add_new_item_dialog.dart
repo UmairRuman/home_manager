@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/controller/quantity_notifier.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_new_item_center_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,6 +21,16 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     final quantityProvider = ref.read(quantitiesProvider.notifier);
     const textStyle = TextStyle(color: Colors.white);
+
+    IconData checkCategory() =>
+        switch (quantityProvider.controlllerForDropDownMenu.text) {
+          AddNewItemCenterDesign.menuEntryOne => Icons.soup_kitchen_outlined,
+          AddNewItemCenterDesign.menuEntryThree => Icons.cookie_sharp,
+          AddNewItemCenterDesign.menuEntryTwo => Icons.fastfood_outlined,
+          AddNewItemCenterDesign.menuEntryFour => Icons.female_outlined,
+          AddNewItemCenterDesign.menuEntryFive => Icons.house_outlined,
+          _ => Icons.local_grocery_store_outlined,
+        };
     return Center(
       child: SizedBox(
         width: width * _dialogWidth,
@@ -100,6 +111,15 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                       child: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
+                            var model = GroceryModel(
+                                itemName:
+                                    quantityProvider.controllerForItemName.text,
+                                itemPrice: int.parse(quantityProvider
+                                    .controllerForItemPrice.text),
+                                totalQuantity: int.parse(quantityProvider
+                                    .controllerForItemQuantity.text),
+                                icon: Icons.abc);
+                            quantityProvider.addNewItem(model, checkCategory());
                             quantityProvider.resetControllers();
                             Navigator.of(context).pop();
                           }

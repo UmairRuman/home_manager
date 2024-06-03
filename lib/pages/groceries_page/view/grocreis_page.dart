@@ -1,84 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/controller/quantity_notifier.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_item_button.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/widgets/dummy_list.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/groceries_list.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GroceryPage extends StatelessWidget {
+class GroceryPage extends ConsumerWidget {
   const GroceryPage({super.key});
+
+  static DummyList dummyList = DummyList();
 
   static const _buttonSpacingFromRight = 0.05;
   static const _buttonSpacingFromBottom = 0.02;
-  static const groceries = <GroceryModel>[
-    GroceryModel(
-        index: 0,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 1,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 2,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 3,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 4,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 5,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 6,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 7,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 8,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-    GroceryModel(
-        index: 9,
-        itemPrice: 200,
-        itemName: 'Milk',
-        totalQuantity: 10,
-        icon: Icons.mail_lock_outlined),
-  ];
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(quantitiesProvider);
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     return Scaffold(
       body: Center(
         child: SizedBox.expand(
           child: Stack(
             children: [
-              const GroceriesList(groceries: groceries),
+              GroceriesList(groceries: dummyList.dummyList),
               Positioned(
                   bottom: height * _buttonSpacingFromBottom,
                   right: width * _buttonSpacingFromRight,

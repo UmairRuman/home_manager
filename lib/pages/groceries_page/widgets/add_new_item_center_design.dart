@@ -8,10 +8,10 @@ class AddNewItemCenterDesign extends ConsumerWidget {
   static const priceHint = 'Item Price';
   static const menuHint = 'Category';
   static const menuEntryOne = 'Dairy';
-  static const menuEntryTwo = 'Vegetable';
+  static const menuEntryTwo = 'Food';
   static const menuEntryThree = 'Fruit';
   static const menuEntryFour = 'Cosmetics';
-  static const menuEntryFive = 'Household Supplies';
+  static const menuEntryFive = 'Household';
   static const menuEntryOthers = 'Others';
 
   final FormFieldValidator<String?> validator;
@@ -38,6 +38,8 @@ class AddNewItemCenterDesign extends ConsumerWidget {
               child: Padding(
                 padding: EdgeInsets.only(bottom: height * 0.035),
                 child: DropdownMenu(
+                    requestFocusOnTap: false,
+                    controller: quantityProvider.controlllerForDropDownMenu,
                     width: width * 0.4,
                     textStyle: const TextStyle(color: Colors.white),
                     inputDecorationTheme: const InputDecorationTheme(

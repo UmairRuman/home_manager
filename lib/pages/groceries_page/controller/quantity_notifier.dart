@@ -1,6 +1,7 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/model/quantity_model.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/view/grocreis_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuantityNotifier extends Notifier<List<QuantityModel>> {
@@ -8,6 +9,12 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
   final TextEditingController controllerForItemPrice = TextEditingController();
   final TextEditingController controllerForItemQuantity =
       TextEditingController();
+  final TextEditingController controlllerForDropDownMenu =
+      TextEditingController();
+  // to make this list equal with data base
+  var _currentItemIndex = 0;
+  // expanded tile
+  var currentIndex = -1;
 
   @override
   List<QuantityModel> build() {
@@ -15,6 +22,7 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
       controllerForItemName.dispose();
       controllerForItemPrice.dispose();
       controllerForItemQuantity.dispose();
+      controlllerForDropDownMenu.dispose();
     });
     return [];
   }
@@ -23,24 +31,42 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
     controllerForItemName.clear();
     controllerForItemPrice.clear();
     controllerForItemQuantity.clear();
+    controlllerForDropDownMenu.clear();
   }
 
-  void addNewItemQuantities(QuantityModel model) {
-    state.add(model);
+  // function to add new item in data base
+  void addNewItem(GroceryModel model, IconData icon) {
+    GroceryPage.dummyList.dummyList.add(model);
+    state.add(QuantityModel(
+        icon: icon,
+        total: model.totalQuantity,
+        used: 0,
+        isExpanded: false,
+        index: _currentItemIndex,
+        itemPrice: model.itemPrice));
+    _currentItemIndex++;
     state = [...state];
   }
 
-  void removeItemQuantity(int index) {
+  //funtion to delete item form data base
+  void deleteItem(int index) {
+    GroceryPage.dummyList.dummyList.removeAt(index);
     state.removeAt(index);
     state = [...state];
+    //check if list is empty current index should be minus one
+    if (state.isEmpty) {
+      currentIndex = -1;
+    }
   }
 
-  void increaseTotalItemsQuantity(int index) {
+  //function to increase total of an item
+  void increaseTotalOfItem(int index) {
     state[index].total++;
     state = [...state];
   }
 
-  void decreaseTotalItemsQuantity(int index) {
+//function to decrease total of an item
+  void decreaseTotalOfItem(int index) {
     if (state[index].total > 0) {
       state[index].total--;
       state = [...state];
@@ -51,46 +77,41 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
     }
   }
 
-  void increaseItemUsedQuantity(int index) {
+  //function to increase total Used of an item
+  void increaseTotalUsedOfItem(int index) {
     if (state[index].used < state[index].total) {
       state[index].used++;
       state = [...state];
     }
   }
 
-  void decreaseItemUsedQuantity(int index) {
+//function to decrease total Used of an item
+  void decreaseTotalUsedOfItem(int index) {
     if (state[index].used > 0) {
       state[index].used--;
       state = [...state];
     }
   }
 
-  int getTotalGroceryExpense() {
-    var totalExpense = 0;
-    state.forEach((element) {
-      var itemExpense = 0;
+  // function to get total grocery expense to show on overviewpage
+  num getTotalGroceryExpense() {
+    num totalExpense = 0;
+    for (var element in state) {
+      num itemExpense = 0;
       itemExpense = element.itemPrice * element.total;
       totalExpense += itemExpense;
-    });
+    }
     return totalExpense;
   }
 
-  void closeOtherTiles(int currentTileIndex) {
-    List<QuantityModel> list = state;
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].index != currentTileIndex) {
-        list[i].isExpanded = false;
-        log('Index : $i value : ${list[i].isExpanded.toString()}');
-      } else {
-        list[i].isExpanded = true;
-        log('index : $i value : ${list[i].isExpanded.toString()}');
-      }
+  // fuck this function
+  void closeOtherTiles(int currentTileIndex, bool value) {
+    if (value) {
+      currentIndex = currentTileIndex;
+    } else {
+      currentIndex = -1;
     }
-
-    list.forEach((element) {
-      log(element.isExpanded.toString());
-    });
-    state = [...list];
+    state = [...state];
   }
 }
 

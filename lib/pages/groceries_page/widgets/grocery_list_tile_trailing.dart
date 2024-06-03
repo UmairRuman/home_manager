@@ -8,7 +8,7 @@ class ListTileTrailing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size(:height) = MediaQuery.sizeOf(context);
-    final textStyle = TextStyle(color: Colors.white, fontSize: height * 0.017);
+    final textStyle = TextStyle(color: Colors.white, fontSize: height * 0.02);
     return SizedBox(
       height: height * 0.1,
       child: Column(
@@ -17,7 +17,7 @@ class ListTileTrailing extends StatelessWidget {
             flex: 1,
             child: Icon(
               icon,
-              size: height * 0.025,
+              size: height * 0.03,
               color: Colors.white,
             ),
           ),

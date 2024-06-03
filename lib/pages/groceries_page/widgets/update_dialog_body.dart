@@ -23,12 +23,12 @@ class DialogBody extends ConsumerWidget {
                 onAddBtnTap: () {
                   ref
                       .read(quantitiesProvider.notifier)
-                      .increaseTotalItemsQuantity(index);
+                      .increaseTotalOfItem(index);
                 },
                 onMinusBtnTap: () {
                   ref
                       .read(quantitiesProvider.notifier)
-                      .decreaseTotalItemsQuantity(index);
+                      .decreaseTotalOfItem(index);
                 },
                 quantityText: ref.read(quantitiesProvider)[index].total)),
         Expanded(
@@ -39,12 +39,12 @@ class DialogBody extends ConsumerWidget {
                 onAddBtnTap: () {
                   ref
                       .read(quantitiesProvider.notifier)
-                      .increaseItemUsedQuantity(index);
+                      .increaseTotalUsedOfItem(index);
                 },
                 onMinusBtnTap: () {
                   ref
                       .read(quantitiesProvider.notifier)
-                      .decreaseItemUsedQuantity(index);
+                      .decreaseTotalUsedOfItem(index);
                 },
                 quantityText: ref.read(quantitiesProvider)[index].used)),
       ],
