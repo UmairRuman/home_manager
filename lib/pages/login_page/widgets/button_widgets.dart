@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/common_app_widgets/common_button.dart';
-
+import 'package:flutter_project_home_manager/pages/login_page/controller/login_page_controller.dart';
 import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginButton extends ConsumerStatefulWidget {
+class LoginButton extends ConsumerWidget {
   const LoginButton({super.key});
 
   @override
-  ConsumerState<LoginButton> createState() => _LoginButtonState();
-}
-
-class _LoginButtonState extends ConsumerState<LoginButton> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var controller = ref.read(logingPageProvider.notifier);
     final size = MediaQuery.sizeOf(context);
-    
+
     onClick() {
-      
       GetIt.I<SharedPreferences>()
-        .setBool(SharedPreferencesConstant.kAccountCreatedButLogout, false);
-      
+          .setBool(SharedPreferencesConstant.kAccountCreatedButLogout, false);
+      controller.loginButtonOnClick(context);
     }
 
     return AppCommonButton(

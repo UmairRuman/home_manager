@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project_home_manager/pages/login_page/controller/login_page_controller.dart';
 
 import 'package:flutter_project_home_manager/pages/login_page/widgets/button_widgets.dart';
 import 'package:flutter_project_home_manager/pages/login_page/widgets/text_fields_widgets.dart';
@@ -10,7 +11,7 @@ class LoginPage extends ConsumerWidget {
   static const pageAddress = '/loginPage';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
+    var controller = ref.read(logingPageProvider.notifier);
     final Size(:height, :width) = MediaQuery.sizeOf(context);
     return PopScope(
       canPop: false,
@@ -23,7 +24,7 @@ class LoginPage extends ConsumerWidget {
                   opacity: 0.4)),
           child: Center(
             child: Form(
-              key: key,
+              key: controller.formKey,
               child: SizedBox(
                 height: height * 0.6,
                 child: Column(

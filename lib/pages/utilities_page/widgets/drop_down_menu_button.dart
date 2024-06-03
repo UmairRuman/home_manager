@@ -4,19 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Flutter code sample for [DropdownButton].
 
-
 class DropDownBillButton extends ConsumerWidget {
   const DropDownBillButton({super.key});
 
-  
-
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var controller = ref.read(utilityPageProvider.notifier);
     ref.watch(utilityPageProvider);
-String dropdownValue = controller.billType;
+    String dropdownValue = controller.billType;
     return DropdownButton<String>(
-      dropdownColor: Colors.blueGrey,
+      dropdownColor: Colors.blueAccent,
       value: dropdownValue,
       icon: const Icon(
         Icons.arrow_downward,
@@ -28,7 +25,8 @@ String dropdownValue = controller.billType;
         color: Colors.white,
       ),
       onChanged: controller.onDropDownValueChange,
-      items: controller.listOfBillCatogaries.map<DropdownMenuItem<String>>((String value) {
+      items: controller.listOfBillCatogaries
+          .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(

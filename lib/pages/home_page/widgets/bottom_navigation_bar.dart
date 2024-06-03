@@ -50,7 +50,12 @@ class HomePageBottomNavigationBar extends StatelessWidget {
 
     return StatefulBuilder(
       builder: (context, setState) {
-        return BottomNavigationBar(items: []);/// items need to be added
+        return BottomNavigationBar(items: [
+          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'First'),
+          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Second'),
+        ]);
+
+        /// items need to be added
       },
     );
   }

@@ -18,7 +18,7 @@ class PaymentTextFormField extends ConsumerWidget {
         textType: TextInputType.number,
         width: width * 0.7,
         value: controller.paidAmount,
-        borderRadius: width * 0.08,
+        borderRadius: width * 0.04,
         controller: controller.paymentController,
         label: 'payment',
         iconColor: Colors.white,

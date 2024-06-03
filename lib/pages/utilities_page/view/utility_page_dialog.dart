@@ -25,7 +25,7 @@ class UtiltiyPageDialog extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(width * 0.08),
-              color: Colors.blue,
+              color: Colors.blue.shade200,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -48,7 +48,8 @@ class UtiltiyPageDialog extends StatelessWidget {
                     flex: 8,
                     child: Builder(builder: (context) {
                       return switch (dialogCallType) {
-                        DialogCallType.addNewBill => AddItemDialogButton(dialogContext: context),
+                        DialogCallType.addNewBill =>
+                          AddItemDialogButton(dialogContext: context),
                         DialogCallType.udateExistingBill =>
                           UpdateItemDialogButton(
                             dialogContext: context,

@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   log('initial widget binding initialized');
   GetIt.I.registerSingleton<SharedPreferences>(
     await SharedPreferences.getInstance(),

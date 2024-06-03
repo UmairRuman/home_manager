@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project_home_manager/pages/overview_page/widgets/bills_expenses_text.dart';
+import 'package:flutter_project_home_manager/pages/overview_page/widgets/grocery_expenses_text.dart';
+import 'package:flutter_project_home_manager/pages/overview_page/widgets/remaining_balance_text.dart';
+import 'package:flutter_project_home_manager/pages/overview_page/widgets/total_budget_text.dart';
 import 'package:flutter_project_home_manager/pages/overview_page/widgets/total_budget_text_field.dart';
 import 'package:flutter_project_home_manager/pages/overview_page/widgets/udpate_budget_button.dart';
 
@@ -23,10 +27,10 @@ class OverviewPage extends ConsumerWidget {
             children: [
               TotalBudgetTextField(),
               UpdateBudgetButton(),
-              // TotalBudgetText(),
-              // GroceryExpensesText(),
-              // BillsExpensesText(),
-              // RemainingBalanceText()
+              TotalBudgetText(),
+              GroceryExpensesText(),
+              BillsExpensesText(),
+              RemainingBalanceText()
             ],
           ),
         ),

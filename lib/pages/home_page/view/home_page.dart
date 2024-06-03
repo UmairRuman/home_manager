@@ -48,9 +48,9 @@ class _HomePageState extends State<HomePage> {
               scrollDirection: Axis.horizontal,
               children: const [
                 OverviewPage(),
-                GroceryPage(),
-                WeatherPage(),
                 UtilityPage(),
+                WeatherPage(),
+                GroceryPage(),
                 ProfilePage(),
               ],
             ),

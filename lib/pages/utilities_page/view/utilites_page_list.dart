@@ -14,8 +14,8 @@ class UtiiltiesPageList extends ConsumerWidget {
     var Size(:width) = MediaQuery.sizeOf(context);
     var controller = ref.read(utilityPageProvider.notifier);
     ref.watch(utilityPageProvider);
-    // var listOfBills = controller.listOfItems;
-    var listOfBills = DummyUtilitiesList.generate();
+    var listOfBills = controller.listOfItems;
+    // var listOfBills = DummyUtilitiesList.generate();
     return ListView.builder(
       itemCount: listOfBills.length,
       itemBuilder: (context, index) {
@@ -31,13 +31,14 @@ class UtiiltiesPageList extends ConsumerWidget {
                   controller.iconAgainstBillCatogary(currentItem.billType)),
               title: Text(
                 currentItem.billType.toString(),
-                style: TextStyle(color: Colors.black, fontSize: width * 0.06),
+                style: TextStyle(color: Colors.black, fontSize: width * 0.05),
               ),
               subtitle: Text(
                 currentItem.dateTime.convertToString(),
                 style:
                     TextStyle(color: Colors.blueAccent, fontSize: width * 0.04),
               ),
+              shape: const CircleBorder(),
               trailing: Text(
                 currentItem.paidAmount.toString(),
                 style:

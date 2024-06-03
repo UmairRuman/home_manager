@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/home_page/view/home_page.dart';
 import 'package:flutter_project_home_manager/pages/login_page/controller/login_page_states.dart';
@@ -19,8 +21,11 @@ class LoginPageController extends Notifier<LoginPageState> {
   SharedPreferences sharedData = GetIt.I<SharedPreferences>();
   String? username, password;
 
+  // login button on click function
   loginButtonOnClick(BuildContext context) {
+    log('log in button clicked');
     if (formKey.currentState!.validate()) {
+      log('form get validated');
       sharedData.setBool(
           SharedPreferencesConstant.kAccountCreatedButLogout, false);
       usernameController.text = '';
