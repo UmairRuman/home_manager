@@ -23,7 +23,7 @@ class GroceryListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(quantitiesProvider);
     final shouldExpand =
-        ref.read(quantitiesProvider.notifier).currentIndex == index;
+        ref.read(quantitiesProvider.notifier).currentTileIndex == index;
     final Size(:width) = MediaQuery.sizeOf(context);
     return Center(
       child: SizedBox(

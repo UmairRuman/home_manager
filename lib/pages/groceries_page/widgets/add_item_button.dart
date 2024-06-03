@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/view/add_new_item_dialog.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddNewItemButton extends StatelessWidget {
+class AddNewItemButton extends ConsumerWidget {
   const AddNewItemButton({super.key});
 
   static const _btnWidth = 0.16;
@@ -10,7 +11,7 @@ class AddNewItemButton extends StatelessWidget {
   static const shadowOffset = Offset(1, 1);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     return GestureDetector(
       onTap: () {
