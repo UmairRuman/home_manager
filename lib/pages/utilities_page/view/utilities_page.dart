@@ -19,7 +19,7 @@ class UtilityPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: width * 0.15, right: width * 0.05),
+        padding: EdgeInsets.only(bottom: width * 0.28, right: width * 0.05),
         child: FloatingActionButton(
           backgroundColor: Colors.blue,
           onPressed: () {

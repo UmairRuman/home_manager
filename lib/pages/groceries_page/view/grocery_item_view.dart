@@ -30,7 +30,9 @@ class GroceryListTile extends ConsumerWidget {
           collapsedTextColor: Colors.white,
           trailing: ListTileTrailing(
               icon: groceryItem.icon,
-              remaining: ref.read(quantitiesProvider)[groceryItem.index].used),
+              remaining: ref
+                  .read(quantitiesProvider)[groceryItem.index]
+                  .used), ////runtime error//////
           collapsedShape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius)),
           collapsedBackgroundColor: Colors.blue.shade300,

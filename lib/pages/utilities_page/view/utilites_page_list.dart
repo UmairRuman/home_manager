@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/common_app_widgets/common_button.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/controller/utility_page_controller.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/model/utility_bill_item.dart';
-import 'package:flutter_project_home_manager/utils/dummy_list_of_utilities.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
