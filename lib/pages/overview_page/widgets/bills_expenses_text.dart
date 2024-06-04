@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/overview_page/controller/overview_page_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BillsExpensesText extends ConsumerWidget {
@@ -8,7 +7,6 @@ class BillsExpensesText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var controller = ref.read(overviewPageProvider.notifier);
     var Size(:width, :height) = MediaQuery.sizeOf(context);
     return Padding(
       padding: EdgeInsets.all(width * 0.01),
