@@ -23,14 +23,15 @@ void main() async {
     await SharedPreferences.getInstance(),
   );
 
-  GetIt.I.registerSingleton<Database>(
-    await openDatabase(
-      join(await getDatabasesPath(), 'budget_app.db'),
-      onCreate: (db, version) {
-        db.execute('');
-      },
-    ),
-  );
+  // GetIt.I.registerSingleton<Database>(
+  //   await openDatabase(
+  //     join(await getDatabasesPath(), 'budget_app.db'),
+  //     version: 1,
+  //     onCreate: (db, version) {
+  //      db.execute('');
+  //     },
+  //   ),
+  // );
   log('shared preferences insatnce initialized');
   SharedPreferences shared = GetIt.I<SharedPreferences>();
 
@@ -59,8 +60,7 @@ void main() async {
     log('sign up page initialized');
   } else {
     initialRoute = SignupPage.pageAddress;
-  }
-
+  }  
   runApp(ProviderScope(child: MyApp(initialRoute: initialRoute)));
 }
 
@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('assets/images/whiteTexturedBackground.jpg'), context);
     return MaterialApp(
       title: 'Home Manager',
       theme: ThemeData(

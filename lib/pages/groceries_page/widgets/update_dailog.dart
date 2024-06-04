@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/update_dialog_body.dart';
 
 class UpdateDialog extends StatelessWidget {
-  const UpdateDialog({super.key, required this.index});
+  final int totalItem , usedItem;
+  const UpdateDialog({super.key, required this.index , required this.totalItem , required this.usedItem,});
 
   static const _dialogWidth = 0.8;
   static const _dialogHeight = 0.25;
@@ -22,7 +23,7 @@ class UpdateDialog extends StatelessWidget {
             color: Colors.blue.shade300,
             borderRadius: BorderRadius.circular(_borderRadius),
           ),
-          child: DialogBody(index: index),
+          child: DialogBody(index: index,totalItem: totalItem,usedItem: usedItem,),
         ),
       ),
     );

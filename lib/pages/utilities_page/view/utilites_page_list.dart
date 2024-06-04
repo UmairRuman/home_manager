@@ -28,6 +28,8 @@ class UtiiltiesPageList extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(width * 0.05),
                 border: Border.all(color: Colors.blue)),
             child: ExpansionTile(
+              collapsedShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(width * 0.05)),
               leading: Icon(
                   controller.iconAgainstBillCatogary(currentItem.billType)),
               title: Text(
@@ -39,7 +41,7 @@ class UtiiltiesPageList extends ConsumerWidget {
                 style:
                     TextStyle(color: Colors.blueAccent, fontSize: width * 0.04),
               ),
-              shape: const CircleBorder(),
+              // shape: const CircleBorder(),
               trailing: Text(
                 currentItem.paidAmount.toString(),
                 style:
@@ -48,6 +50,8 @@ class UtiiltiesPageList extends ConsumerWidget {
               expansionAnimationStyle: AnimationStyle(
                   curve: Curves.easeInOut,
                   duration: const Duration(seconds: 1)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(width * 0.05)),
               children: [
                 Padding(
                   padding: EdgeInsets.all(width * 0.05),

@@ -4,14 +4,28 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class GroceryModel {
+  static const tableName = 'groceries';
+  static const colId = 'id';
+  static const colItemName = 'itemName';
+  static const colItemPrice = 'itemPrice';
+  static const colTotalQuantity = 'totalQuantity';
+  static const colUsedQuantity = 'usedQuantity';
+  static const createTable = 'CREATE TABLE IF NOT EXISTS $tableName ( $colId INTEGER PRIMARY KEY , $colItemName TEXT , $colItemPrice REAL , $colTotalQuantity INTEGER , $colUsedQuantity INTEGER )';
+  static const dropTable = 'DROP TABLE IF EXISTS $tableName';
+  static const selectAll = 'SELECT * FROM $tableName';    
+
+  int id;
   final String itemName;
   final num itemPrice; // num
   final int totalQuantity;
+  final int usedQuantity;
   final IconData icon;
   GroceryModel({
+    this.id = 0,
     required this.itemName,
     required this.itemPrice,
     required this.totalQuantity,
+    required this.usedQuantity,
     required this.icon,
   });
   
@@ -21,30 +35,35 @@ class GroceryModel {
     num? itemPrice,
     int? totalQuantity,
     IconData? icon,
+    int? usedQuantity,
   }) {
     return GroceryModel(
       itemName: itemName ?? this.itemName,
       itemPrice: itemPrice ?? this.itemPrice,
       totalQuantity: totalQuantity ?? this.totalQuantity,
+      usedQuantity: usedQuantity ?? this.usedQuantity,
       icon: icon ?? this.icon,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'itemName': itemName,
-      'itemPrice': itemPrice,
-      'totalQuantity': totalQuantity,
-      'icon': icon.codePoint,
+      colId : null, // Null so that sqlite automatically handles this id
+      colItemName : itemName,
+      colItemPrice : itemPrice,
+      colTotalQuantity : totalQuantity,
+      colUsedQuantity : usedQuantity,      
     };
   }
 
   factory GroceryModel.fromMap(Map<String, dynamic> map) {
     return GroceryModel(
-      itemName: map['itemName'] as String,
-      itemPrice: map['itemPrice'] as num,
-      totalQuantity: map['totalQuantity'] as int,
-      icon: IconData(map['icon'] as int, fontFamily: 'MaterialIcons'),
+      id: map[colId] as int,
+      itemName: map[colItemName] as String,
+      itemPrice: map[colItemPrice] as num,
+      totalQuantity: map[colTotalQuantity] as int,
+      usedQuantity: map[colUsedQuantity] as int,
+      icon: IconData((map['icon'] ?? 0) as int, fontFamily: 'MaterialIcons'),
     );
   }
 

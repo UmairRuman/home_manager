@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/controller/quantity_notifier.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/controller/grocery_notifier.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_new_item_center_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +20,7 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Size(:width, :height) = MediaQuery.sizeOf(context);
-    final quantityProvider = ref.read(quantitiesProvider.notifier);
+    final quantityProvider = ref.read(groceriesProvider.notifier);
     const textStyle = TextStyle(color: Colors.white);
 
     IconData checkCategory() =>
@@ -119,8 +119,9 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                                     .controllerForItemPrice.text),
                                 totalQuantity: int.parse(quantityProvider
                                     .controllerForItemQuantity.text),
+                                usedQuantity: 0,
                                 icon: Icons.abc);
-                            quantityProvider.addNewItem(model, checkCategory());
+                            quantityProvider.addGrocery(model);
                             quantityProvider.resetControllers();
                             ScaffoldMessenger.of(context)
                               ..clearSnackBars()

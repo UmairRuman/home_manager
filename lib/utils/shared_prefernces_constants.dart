@@ -6,4 +6,5 @@ class SharedPreferencesConstant {
   static const String kSharedPreferencePasswordHintKey =
       'sharedPreferencesPasswordHint';
   static const String kAccountCreatedButLogout = 'userLogout';
+  static const String kTotalBudget = 'totalBudget';
 }

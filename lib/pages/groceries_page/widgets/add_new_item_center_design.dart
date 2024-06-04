@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/controller/quantity_notifier.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/view/add_new_item_dialog.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/controller/grocery_notifier.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_new_item_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddNewItemCenterDesign extends ConsumerWidget {
@@ -17,7 +17,7 @@ class AddNewItemCenterDesign extends ConsumerWidget {
   final FormFieldValidator<String?> validator;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final quantityProvider = ref.read(quantitiesProvider.notifier);
+    final quantityProvider = ref.read(groceriesProvider.notifier);
     final Size(:height, :width) = MediaQuery.sizeOf(context);
     return Row(
       children: [

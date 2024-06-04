@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/view/grocery_item_view.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/widgets/grocery_list_tile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GroceriesList extends ConsumerWidget {

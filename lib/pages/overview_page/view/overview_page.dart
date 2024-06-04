@@ -19,7 +19,7 @@ class OverviewPage extends ConsumerWidget {
             image: DecorationImage(
                 image: AssetImage('assets/images/whiteTexturedBackground.jpg'),
                 fit: BoxFit.fill,
-                opacity: 0.7)),
+                opacity: 0.7),),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

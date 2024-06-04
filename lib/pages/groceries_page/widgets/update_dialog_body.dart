@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/controller/quantity_notifier.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/controller/grocery_notifier.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/update_dialog_row_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DialogBody extends ConsumerWidget {
-  const DialogBody({super.key, required this.index});
+  final int totalItem , usedItem;
+  const DialogBody({super.key, required this.index , required this.totalItem , required this.usedItem,});
 
   static const totalItems = 'Total Items';
   static const usedItems = 'Used Items';
@@ -12,7 +13,7 @@ class DialogBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(quantitiesProvider);
+    ref.watch(groceriesProvider);
     return Column(
       children: [
         Expanded(
@@ -21,32 +22,24 @@ class DialogBody extends ConsumerWidget {
                 index: index,
                 text: totalItems,
                 onAddBtnTap: () {
-                  ref
-                      .read(quantitiesProvider.notifier)
-                      .increaseTotalOfItem(index);
+                  
                 },
                 onMinusBtnTap: () {
-                  ref
-                      .read(quantitiesProvider.notifier)
-                      .decreaseTotalOfItem(index);
+                  
                 },
-                quantityText: ref.read(quantitiesProvider)[index].total)),
+                quantityText: totalItem)),
         Expanded(
             flex: 1,
             child: UpdateDialogRowDesign(
                 index: index,
                 text: usedItems,
                 onAddBtnTap: () {
-                  ref
-                      .read(quantitiesProvider.notifier)
-                      .increaseTotalUsedOfItem(index);
+                  
                 },
                 onMinusBtnTap: () {
-                  ref
-                      .read(quantitiesProvider.notifier)
-                      .decreaseTotalUsedOfItem(index);
+                  
                 },
-                quantityText: ref.read(quantitiesProvider)[index].used)),
+                quantityText: usedItem)),
       ],
     );
   }

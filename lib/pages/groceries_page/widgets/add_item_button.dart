@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/view/add_new_item_dialog.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_new_item_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddNewItemButton extends ConsumerWidget {

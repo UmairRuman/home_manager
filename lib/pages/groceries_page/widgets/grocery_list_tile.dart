@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/controller/quantity_notifier.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/controller/grocery_notifier.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
-import 'package:flutter_project_home_manager/pages/groceries_page/view/update_dailog.dart';
+import 'package:flutter_project_home_manager/pages/groceries_page/widgets/update_dailog.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/grocery_list_tile_leading.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/grocery_list_tile_trailing.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/update_delete_button.dart';
@@ -21,9 +21,9 @@ class GroceryListTile extends ConsumerWidget {
   static const _boxWidth = 0.95;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(quantitiesProvider);
+    ref.watch(groceriesProvider);
     final shouldExpand =
-        ref.read(quantitiesProvider.notifier).currentTileIndex == index;
+        ref.read(groceriesProvider.notifier).currentTileIndex == index;
     final Size(:width) = MediaQuery.sizeOf(context);
     return Center(
       child: SizedBox(
@@ -31,10 +31,10 @@ class GroceryListTile extends ConsumerWidget {
         child: ExpansionTile(
           leading: ListTileLeading(
               itemName: groceryItem.itemName,
-              totalQuantity: ref.read(quantitiesProvider)[index].total),
+              totalQuantity: groceryItem.totalQuantity),
           initiallyExpanded: shouldExpand,
           onExpansionChanged: (value) {
-            ref.read(quantitiesProvider.notifier).closeOtherTiles(index, value);
+            
           },
           textColor: Colors.white,
           collapsedTextColor: Colors.white,
@@ -45,8 +45,9 @@ class GroceryListTile extends ConsumerWidget {
           collapsedBackgroundColor: Colors.blue.shade300,
           backgroundColor: Colors.blue.shade300,
           title: ListTileTrailing(
-              icon: ref.read(quantitiesProvider)[index].icon,
-              remaining: ref.read(quantitiesProvider)[index].used),
+              icon: groceryItem.icon,
+              remaining: groceryItem.usedQuantity,
+              ),
           children: [
             ListTile(
               title: Center(
@@ -62,7 +63,7 @@ class GroceryListTile extends ConsumerWidget {
                               showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return UpdateDialog(index: index);
+                                  return UpdateDialog(index: index , totalItem: groceryItem.totalQuantity,usedItem: groceryItem.usedQuantity,);
                                 },
                               );
                             },
@@ -75,9 +76,7 @@ class GroceryListTile extends ConsumerWidget {
                           alignment: Alignment.centerLeft,
                           child: UpdateDeleteButton(
                               onBtnTap: () {
-                                ref
-                                    .read(quantitiesProvider.notifier)
-                                    .deleteItem(index);
+                                
                               },
                               btnText: deleteItembtnText),
                         ))
