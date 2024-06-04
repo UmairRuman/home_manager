@@ -12,7 +12,7 @@ class UsernameTextFormField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.sizeOf(context);
-    final controller = ref.read(logingPageProvider.notifier);
+    final controller = ref.read(loginPageProvider.notifier);
     return AppCommonField(
       prefixIcon: Icons.person,
       width: size.width * 0.8,
@@ -30,7 +30,7 @@ class PasswordTextFormField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.sizeOf(context);
-    final controller = ref.read(logingPageProvider.notifier);
+    final controller = ref.read(loginPageProvider.notifier);
     return AppCommonField(
       width: size.width * 0.8,
       borderRadius: size.width * 0.06,

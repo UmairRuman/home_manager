@@ -11,7 +11,7 @@ class LoginButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var controller = ref.read(logingPageProvider.notifier);
+    var controller = ref.read(loginPageProvider.notifier);
     final size = MediaQuery.sizeOf(context);
 
     onClick() {

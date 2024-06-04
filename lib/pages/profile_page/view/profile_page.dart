@@ -15,9 +15,10 @@ class ProfilePage extends ConsumerWidget {
   static const pageAddress = '/profilePage';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
+    var controller = ref.read(profilePageProvider.notifier);
+    return Scaffold(
       body: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/images/textureBackgroundTwo.jpg'),
               fit: BoxFit.cover,
@@ -25,8 +26,8 @@ class ProfilePage extends ConsumerWidget {
         ),
         child: Center(
           child: Form(
-            // key: controller.passwordFormKey,
-            child: SingleChildScrollView(
+            key: controller.passwordFormKey,
+            child: const SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -11,7 +11,7 @@ class LoginPage extends ConsumerWidget {
   static const pageAddress = '/loginPage';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var controller = ref.read(logingPageProvider.notifier);
+    var controller = ref.read(loginPageProvider.notifier);
     final Size(:height, :width) = MediaQuery.sizeOf(context);
     return PopScope(
       canPop: true,

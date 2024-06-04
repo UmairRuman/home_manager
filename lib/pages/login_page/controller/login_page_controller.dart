@@ -8,9 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final logingPageProvider =
-    NotifierProvider<LoginPageController, LoginPageState>(
-        LoginPageController.new);
+final loginPageProvider = NotifierProvider<LoginPageController, LoginPageState>(
+    LoginPageController.new);
 
 class LoginPageController extends Notifier<LoginPageState> {
   TextEditingController usernameController = TextEditingController();
@@ -28,9 +27,12 @@ class LoginPageController extends Notifier<LoginPageState> {
       log('form get validated');
       sharedData.setBool(
           SharedPreferencesConstant.kAccountCreatedButLogout, false);
-      sharedData.setString(SharedPreferencesConstant.kSharedPreferenceUsernameKey, usernameController.text);
+      sharedData.setString(
+          SharedPreferencesConstant.kSharedPreferenceUsernameKey,
+          usernameController.text);
       usernameController.text = '';
       passwordController.text = '';
+      log('prefrences values updated');
       Navigator.pushReplacementNamed(context, HomePage.pageAddress);
     }
   }

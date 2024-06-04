@@ -63,87 +63,84 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
         fontSize: height * 0.045,
         fontFamily: 'California');
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Consumer(
-                    builder: (context, ref, child) {
-                      var state = ref.watch(weatherProvider);
-                      if (state is InitialState) {
-                        return Container(
-                          color: previousColor,
-                        );
-                      } else if (state is NetworkErrorState) {
-                        SchedulerBinding.instance.addPostFrameCallback(
-                          (timeStamp) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(state.networkErrorMessage)));
-                          },
-                        );
-                        return Container(
-                          color: previousColor,
-                        );
-                      } else if (state is ErrorState) {
-                        SchedulerBinding.instance.addPostFrameCallback(
-                          (timeStamp) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(state.errorMessage)));
-                          },
-                        );
-                        return Container(
-                          color: previousColor,
-                        );
-                      } else if (state is WeatherLoadedState) {
-                        previousColor =
-                            checkColor(state.weatherInfo.weather[0].main);
-                        return WeatherLoadedWidget(
-                          backGroundColor:
-                              checkColor(state.weatherInfo.weather[0].main),
-                          animation: animation,
-                          cityName: state.weatherInfo.name,
-                          temperature: _convertKelvinToCelsius(
-                                  state.weatherInfo.main.temp)
+        child: SizedBox(
+          height: height,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Consumer(
+                builder: (context, ref, child) {
+                  var state = ref.watch(weatherProvider);
+                  if (state is InitialState) {
+                    return Container(
+                      color: previousColor,
+                    );
+                  } else if (state is NetworkErrorState) {
+                    SchedulerBinding.instance.addPostFrameCallback(
+                      (timeStamp) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.networkErrorMessage)));
+                      },
+                    );
+                    return Container(
+                      color: previousColor,
+                    );
+                  } else if (state is ErrorState) {
+                    SchedulerBinding.instance.addPostFrameCallback(
+                      (timeStamp) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.errorMessage)));
+                      },
+                    );
+                    return Container(
+                      color: previousColor,
+                    );
+                  } else if (state is WeatherLoadedState) {
+                    previousColor =
+                        checkColor(state.weatherInfo.weather[0].main);
+                    return WeatherLoadedWidget(
+                      backGroundColor:
+                          checkColor(state.weatherInfo.weather[0].main),
+                      animation: animation,
+                      cityName: state.weatherInfo.name,
+                      temperature:
+                          _convertKelvinToCelsius(state.weatherInfo.main.temp)
                               .toInt(),
-                          icon: state.weatherInfo.weather[0].icon,
-                          main: state.weatherInfo.weather[0].main,
-                          humidity: state.weatherInfo.main.humidity,
-                          maxTemp: _convertKelvinToCelsius(
-                                  state.weatherInfo.main.tempMax)
-                              .toInt(),
-                          minTemp: _convertKelvinToCelsius(
-                                  state.weatherInfo.main.tempMin)
-                              .toInt(),
-                          descrp: state.weatherInfo.weather[0].description,
-                        );
-                      } else {
-                        return Container(
-                          color: previousColor,
-                        );
-                      }
-                    },
-                  ),
-                  Positioned(
-                      top: height * headingSpacingFromTop,
-                      child: Text(
-                        heading,
-                        style: textStyle,
-                      )),
-                  Positioned(
-                    top: height * inputFieldSpacingFormTop,
-                    child: const WeatherInputField(),
-                  ),
-                  Positioned(
-                      bottom: height * buttonSpacingFromBottom,
-                      child: GetWeatherButton(onBtnTap: _onBtnTap))
-                ],
+                      icon: state.weatherInfo.weather[0].icon,
+                      main: state.weatherInfo.weather[0].main,
+                      humidity: state.weatherInfo.main.humidity,
+                      maxTemp: _convertKelvinToCelsius(
+                              state.weatherInfo.main.tempMax)
+                          .toInt(),
+                      minTemp: _convertKelvinToCelsius(
+                              state.weatherInfo.main.tempMin)
+                          .toInt(),
+                      descrp: state.weatherInfo.weather[0].description,
+                    );
+                  } else {
+                    return Container(
+                      color: previousColor,
+                    );
+                  }
+                },
               ),
-            ),
-          ],
+              Positioned(
+                  top: height * headingSpacingFromTop,
+                  child: Text(
+                    heading,
+                    style: textStyle,
+                  )),
+              Positioned(
+                top: height * inputFieldSpacingFormTop,
+                child: const WeatherInputField(),
+              ),
+              Positioned(
+                  bottom: height * buttonSpacingFromBottom,
+                  child: GetWeatherButton(onBtnTap: _onBtnTap))
+            ],
+          ),
         ),
       ),
     );

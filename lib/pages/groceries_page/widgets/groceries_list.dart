@@ -22,7 +22,9 @@ class GroceriesList extends ConsumerWidget {
                   groceryItem: groceries[index],
                 ),
               ),
-              const ListTile()
+              SizedBox(
+                height: height * 0.23,
+              )
             ],
           );
         }
