@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_project_home_manager/pages/error_page/error_page.dart';
 import 'package:flutter_project_home_manager/pages/weather_page/controller/states.dart';
 import 'package:flutter_project_home_manager/pages/weather_page/controller/weather_notifier.dart';
 import 'package:flutter_project_home_manager/pages/weather_page/widgets/get_weather_button.dart';
@@ -23,8 +20,8 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
   //constant values
   static const heading = 'Live Weather';
   static const headingSpacingFromTop = 0.06;
-  static const buttonSpacingFromBottom = 0.005;
-  static const inputFieldSpacingFormTop = 0.35;
+  static const buttonSpacingFromBottom = 0.05;
+  static const inputFieldSpacingFormTop = 0.32;
   static const clear = 'Clear';
   static const rain = 'Rain';
   static const drizzle = 'Drizzle';
@@ -45,7 +42,7 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
       duration: const Duration(
         seconds: 2,
       ),
-    );
+    )..forward();
 
     animation = tweenForAnmiation.animate(_controller);
   }
@@ -60,7 +57,6 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
 
   @override
   Widget build(BuildContext context) {
-    log('build');
     final Size(:height) = MediaQuery.sizeOf(context);
     final textStyle = TextStyle(
         color: Colors.white,
@@ -93,7 +89,15 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
                           color: previousColor,
                         );
                       } else if (state is ErrorState) {
-                        return const ErrorPage();
+                        SchedulerBinding.instance.addPostFrameCallback(
+                          (timeStamp) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.errorMessage)));
+                          },
+                        );
+                        return Container(
+                          color: previousColor,
+                        );
                       } else if (state is WeatherLoadedState) {
                         previousColor =
                             checkColor(state.weatherInfo.weather[0].main);

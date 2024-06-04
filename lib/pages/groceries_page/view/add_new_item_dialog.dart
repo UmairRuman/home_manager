@@ -15,6 +15,7 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
   static const _emptyFieldError = 'Field Cannot Be Empty';
   static const _nameFieldError = 'Only Alphabets!';
   static const _priceAndQuantityFieldError = 'Only Digits!';
+  static const scaffoldMessangerText = 'Item added';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -121,6 +122,16 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                                 icon: Icons.abc);
                             quantityProvider.addNewItem(model, checkCategory());
                             quantityProvider.resetControllers();
+                            ScaffoldMessenger.of(context)
+                              ..clearSnackBars()
+                              ..showSnackBar(
+                                SnackBar(
+                                    content: const Text(
+                                      scaffoldMessangerText,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Colors.blue.shade400),
+                              );
                             Navigator.of(context).pop();
                           }
                         },
@@ -170,6 +181,8 @@ class AddNewItemTextField extends StatelessWidget {
     return SizedBox(
       width: width * fieldSize,
       child: TextFormField(
+        cursorColor: Colors.white,
+        cursorWidth: width * 0.003,
         keyboardType: keyBoardType,
         controller: controller,
         style: textStyle,

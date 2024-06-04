@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/view/add_new_item_dialog.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddNewItemButton extends StatelessWidget {
+class AddNewItemButton extends ConsumerWidget {
   const AddNewItemButton({super.key});
 
-  static const _btnWidth = 0.15;
-  static const _btnHeight = 0.07;
-  static const _btnBlurRadius = 5.0;
-  static const _btnSpreadRadius = 2.0;
+  static const _btnWidth = 0.16;
+  static const _btnHeight = 0.09;
 
   static const shadowOffset = Offset(1, 1);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     return GestureDetector(
       onTap: () {
@@ -28,19 +27,12 @@ class AddNewItemButton extends StatelessWidget {
           height: height * _btnHeight,
           child: const DecoratedBox(
             decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: _btnBlurRadius,
-                    spreadRadius: _btnSpreadRadius,
-                    offset: shadowOffset,
-                  ),
-                ]),
+              color: Colors.blue,
+              shape: BoxShape.circle,
+            ),
             child: Icon(
               Icons.add,
-              color: Colors.blue,
+              color: Colors.white,
             ),
           )),
     );

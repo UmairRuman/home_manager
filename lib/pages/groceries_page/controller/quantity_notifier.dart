@@ -14,7 +14,7 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
   // to make this list equal with data base
   var _currentItemIndex = 0;
   // expanded tile
-  var currentIndex = -1;
+  var currentTileIndex = -1;
 
   @override
   List<QuantityModel> build() {
@@ -53,10 +53,8 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
     GroceryPage.dummyList.dummyList.removeAt(index);
     state.removeAt(index);
     state = [...state];
-    //check if list is empty current index should be minus one
-    if (state.isEmpty) {
-      currentIndex = -1;
-    }
+    //close all tiles
+    currentTileIndex = -1;
   }
 
   //function to increase total of an item
@@ -105,11 +103,11 @@ class QuantityNotifier extends Notifier<List<QuantityModel>> {
   }
 
   // fuck this function
-  void closeOtherTiles(int currentTileIndex, bool value) {
+  void closeOtherTiles(int tileIndex, bool value) {
     if (value) {
-      currentIndex = currentTileIndex;
+      currentTileIndex = tileIndex;
     } else {
-      currentIndex = -1;
+      currentTileIndex = -1;
     }
     state = [...state];
   }
