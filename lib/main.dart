@@ -12,6 +12,8 @@ import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,15 @@ void main() async {
   log('initial widget binding initialized');
   GetIt.I.registerSingleton<SharedPreferences>(
     await SharedPreferences.getInstance(),
+  );
+
+  GetIt.I.registerSingleton<Database>(
+    await openDatabase(
+      join(await getDatabasesPath(), 'budget_app.db'),
+      onCreate: (db, version) {
+        db.execute('');
+      },
+    ),
   );
   log('shared preferences insatnce initialized');
   SharedPreferences shared = GetIt.I<SharedPreferences>();
