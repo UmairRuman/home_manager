@@ -18,7 +18,7 @@ class SignupPage extends ConsumerWidget {
         body: DecoratedBox(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/background.jpeg'),
+                  image: AssetImage('assets/images/signup_image.jpg'),
                   fit: BoxFit.cover,
                   opacity: 0.4)),
           child: Center(

@@ -19,7 +19,7 @@ class LoginPage extends ConsumerWidget {
         body: DecoratedBox(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/backgroundtwo.jpeg'),
+                  image: AssetImage('assets/images/login_image.jpg'),
                   fit: BoxFit.cover,
                   opacity: 0.4)),
           child: Center(

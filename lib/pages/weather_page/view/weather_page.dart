@@ -20,7 +20,7 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
   //constant values
   static const heading = 'Live Weather';
   static const headingSpacingFromTop = 0.06;
-  static const buttonSpacingFromBottom = 0.05;
+  static const buttonSpacingFromBottom = 0.15;
   static const inputFieldSpacingFormTop = 0.32;
   static const clear = 'Clear';
   static const rain = 'Rain';
@@ -62,12 +62,12 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
         color: Colors.white,
         fontSize: height * 0.045,
         fontFamily: 'California');
-    return Material(
-      child: SizedBox.expand(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            Expanded(
-              flex: 9,
+            SizedBox(
+              height: height,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -143,19 +143,6 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
                 ],
               ),
             ),
-            Expanded(
-                flex: 1,
-                child: Consumer(builder: (context, ref, child) {
-                  var state = ref.watch(weatherProvider);
-                  if (state is WeatherLoadedState) {
-                    return Container(
-                        color: checkColor(state.weatherInfo.weather[0].main));
-                  } else {
-                    return Container(
-                      color: previousColor,
-                    );
-                  }
-                })),
           ],
         ),
       ),

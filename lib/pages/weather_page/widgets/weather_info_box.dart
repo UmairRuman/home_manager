@@ -21,16 +21,11 @@ class WeatherInfoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size(:width, :height) = MediaQuery.sizeOf(context);
-    return Container(
+    return SizedBox(
       width: width * _containerWidth,
       height: height * _containerHeight,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
-      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
               flex: 1,
@@ -83,6 +78,7 @@ class WeatherValues extends StatelessWidget {
     final Size(:height) = MediaQuery.sizeOf(context);
     final valueStyle = TextStyle(color: Colors.black, fontSize: height * 0.022);
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
             flex: 1,

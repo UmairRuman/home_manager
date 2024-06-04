@@ -28,8 +28,8 @@ class WeatherLoadedWidget extends StatelessWidget {
   static const tempSpacingFromLeft = 0.1;
   static const imageSpacingFromRight = 0.1;
   static const descriptionSpacingFromRight = 0.21;
-  static const infoBoxSpacingFromRight = 0.1;
-  static const infoBoxSpacingFromBottom = 0.13;
+  static const infoBoxSpacingFromRight = 0.0;
+  static const infoBoxSpacingFromBottom = 0.23;
   //image box
   static const imageWidthAndHeight = 0.3;
   @override

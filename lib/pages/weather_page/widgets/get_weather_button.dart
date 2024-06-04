@@ -9,16 +9,10 @@ class GetWeatherButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: const ButtonStyle(
-          surfaceTintColor: MaterialStatePropertyAll(Colors.white),
-          foregroundColor: MaterialStatePropertyAll(Colors.white),
-          backgroundColor: MaterialStatePropertyAll(Colors.white)),
-      onPressed: onBtnTap,
-      child: const Text(
-        btnText,
-        style: TextStyle(color: Colors.black),
-      ),
-    );
+    return TextButton(
+        onPressed: onBtnTap,
+        child: const Text(
+          btnText,
+        ));
   }
 }

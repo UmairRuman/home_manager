@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/controller/grocery_notifier.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_new_item_center_design.dart';
+import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewExpenseItemDialog extends ConsumerWidget {
   const AddNewExpenseItemDialog({super.key});
@@ -15,23 +18,17 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
   static const _emptyFieldError = 'Field Cannot Be Empty';
   static const _nameFieldError = 'Only Alphabets!';
   static const _priceAndQuantityFieldError = 'Only Digits!';
-  static const scaffoldMessangerText = 'Item added';
+  static const itemAddedText = 'Item added';
+  static const totalBudgetNotSetText = 'Set total budget first';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     final quantityProvider = ref.read(groceriesProvider.notifier);
     const textStyle = TextStyle(color: Colors.white);
-
-    IconData checkCategory() =>
-        switch (quantityProvider.controlllerForDropDownMenu.text) {
-          AddNewItemCenterDesign.menuEntryOne => Icons.soup_kitchen_outlined,
-          AddNewItemCenterDesign.menuEntryThree => Icons.cookie_sharp,
-          AddNewItemCenterDesign.menuEntryTwo => Icons.fastfood_outlined,
-          AddNewItemCenterDesign.menuEntryFour => Icons.female_outlined,
-          AddNewItemCenterDesign.menuEntryFive => Icons.house_outlined,
-          _ => Icons.local_grocery_store_outlined,
-        };
+    final double totalBudget = GetIt.I<SharedPreferences>()
+            .getDouble(SharedPreferencesConstant.kTotalBudget) ??
+        0.0;
     return Center(
       child: SizedBox(
         width: width * _dialogWidth,
@@ -112,28 +109,41 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                       child: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            var model = GroceryModel(
-                                itemName:
-                                    quantityProvider.controllerForItemName.text,
-                                itemPrice: int.parse(quantityProvider
-                                    .controllerForItemPrice.text),
-                                totalQuantity: int.parse(quantityProvider
-                                    .controllerForItemQuantity.text),
-                                usedQuantity: 0,
-                                icon: Icons.abc);
-                            quantityProvider.addGrocery(model);
-                            quantityProvider.resetControllers();
-                            ScaffoldMessenger.of(context)
-                              ..clearSnackBars()
-                              ..showSnackBar(
-                                SnackBar(
-                                    content: const Text(
-                                      scaffoldMessangerText,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    backgroundColor: Colors.blue.shade400),
-                              );
-                            Navigator.of(context).pop();
+                            if (totalBudget > 0.0) {
+                              var model = GroceryModel(
+                                  itemName: quantityProvider
+                                      .controllerForItemName.text,
+                                  itemPrice: int.parse(quantityProvider
+                                      .controllerForItemPrice.text),
+                                  totalQuantity: int.parse(quantityProvider
+                                      .controllerForItemQuantity.text),
+                                  usedQuantity: 0,
+                                  icon: Icons.abc);
+                              quantityProvider.addGrocery(model);
+                              quantityProvider.resetControllers();
+                              ScaffoldMessenger.of(context)
+                                ..clearSnackBars()
+                                ..showSnackBar(
+                                  SnackBar(
+                                      content: const Text(
+                                        itemAddedText,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.blue.shade400),
+                                );
+                              Navigator.of(context).pop();
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                ..clearSnackBars()
+                                ..showSnackBar(
+                                  SnackBar(
+                                      content: const Text(
+                                        totalBudgetNotSetText,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.blue.shade400),
+                                );
+                            }
                           }
                         },
                         child: const Text(
