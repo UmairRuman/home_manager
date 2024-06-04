@@ -3,9 +3,10 @@ import 'package:flutter_project_home_manager/pages/home_page/controller/home_pag
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homePageProvider =
-    NotifierProvider<HomePageController, HomePageState>(HomePageController.new);
+    NotifierProvider.autoDispose<HomePageController, HomePageState>(HomePageController.new);
+    
 
-class HomePageController extends Notifier<HomePageState> {
+class HomePageController extends AutoDisposeNotifier<HomePageState> {
   NotchBottomBarController notchBottomBarController =
       NotchBottomBarController(index: 0);
   int currentIndex = 0;
@@ -18,6 +19,7 @@ class HomePageController extends Notifier<HomePageState> {
 
   @override
   HomePageState build() {
+    ref.onDispose(notchBottomBarController.dispose);
     return HomePageInitialState();
   }
 }

@@ -23,3 +23,9 @@ class GroceryErrorState extends GroceryState{
   final String errorMessage;
   const GroceryErrorState({required this.errorMessage});
 }
+
+@immutable
+class GroceryUpdateDialogState extends GroceryState{
+  final int total , used;
+  const GroceryUpdateDialogState({required this.total , required this.used});
+}

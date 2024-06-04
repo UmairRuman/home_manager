@@ -13,25 +13,28 @@ class OverviewPage extends ConsumerWidget {
   static const pageAddress = '/overviewPage';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
-      body: DecoratedBox(
-        decoration: BoxDecoration(
+    return const SafeArea(
+      child: Scaffold(
+        body: DecoratedBox(
+          decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/images/whiteTexturedBackground.jpg'),
                 fit: BoxFit.fill,
-                opacity: 0.7),),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TotalBudgetTextField(),
-              UpdateBudgetButton(),
-              TotalBudgetText(),
-              GroceryExpensesText(),
-              BillsExpensesText(),
-              RemainingBalanceText()
-            ],
+                opacity: 0.7),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TotalBudgetTextField(),
+                UpdateBudgetButton(),
+                TotalBudgetText(),
+                GroceryExpensesText(),
+                BillsExpensesText(),
+                RemainingBalanceText()
+              ],
+            ),
           ),
         ),
       ),

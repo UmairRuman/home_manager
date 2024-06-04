@@ -5,7 +5,7 @@ import 'package:flutter_project_home_manager/pages/groceries_page/widgets/add_ne
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddNewExpenseItemDialog extends ConsumerWidget {
-  const AddNewExpenseItemDialog({super.key});
+  AddNewExpenseItemDialog({super.key});
   static const _dialogWidth = 0.85;
   static const _dialogHeight = 0.5;
   static const _dialogBorderRadius = 20.0;
@@ -16,22 +16,22 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
   static const _nameFieldError = 'Only Alphabets!';
   static const _priceAndQuantityFieldError = 'Only Digits!';
   static const scaffoldMessangerText = 'Item added';
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Widget build(BuildContext context, WidgetRef ref) {    
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     final quantityProvider = ref.read(groceriesProvider.notifier);
     const textStyle = TextStyle(color: Colors.white);
 
-    IconData checkCategory() =>
-        switch (quantityProvider.controlllerForDropDownMenu.text) {
-          AddNewItemCenterDesign.menuEntryOne => Icons.soup_kitchen_outlined,
-          AddNewItemCenterDesign.menuEntryThree => Icons.cookie_sharp,
-          AddNewItemCenterDesign.menuEntryTwo => Icons.fastfood_outlined,
-          AddNewItemCenterDesign.menuEntryFour => Icons.female_outlined,
-          AddNewItemCenterDesign.menuEntryFive => Icons.house_outlined,
-          _ => Icons.local_grocery_store_outlined,
-        };
+    // IconData checkCategory() =>
+    //     switch (quantityProvider.controlllerForDropDownMenu.text) {
+    //       AddNewItemCenterDesign.menuEntryOne => Icons.soup_kitchen_outlined,
+    //       AddNewItemCenterDesign.menuEntryThree => Icons.cookie_sharp,
+    //       AddNewItemCenterDesign.menuEntryTwo => Icons.fastfood_outlined,
+    //       AddNewItemCenterDesign.menuEntryFour => Icons.female_outlined,
+    //       AddNewItemCenterDesign.menuEntryFive => Icons.house_outlined,
+    //       _ => Icons.local_grocery_store_outlined,
+    //     };
     return Center(
       child: SizedBox(
         width: width * _dialogWidth,
@@ -120,6 +120,7 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                                 totalQuantity: int.parse(quantityProvider
                                     .controllerForItemQuantity.text),
                                 usedQuantity: 0,
+
                                 icon: Icons.abc);
                             quantityProvider.addGrocery(model);
                             quantityProvider.resetControllers();

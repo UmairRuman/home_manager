@@ -18,7 +18,7 @@ class AddNewItemButton extends ConsumerWidget {
         showDialog(
           context: context,
           builder: (context) {
-            return const AddNewExpenseItemDialog();
+            return AddNewExpenseItemDialog();
           },
         );
       },

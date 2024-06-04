@@ -12,12 +12,11 @@ class HomePageBottomNavigationBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var controller = ref.read(homePageProvider.notifier);
-    var Size(:width, :height) = MediaQuery.sizeOf(context);
-    ref.watch(homePageProvider);
-    return AnimatedNotchBottomBar(
+    var Size(:width, :height) = MediaQuery.sizeOf(context);    
+    return AnimatedNotchBottomBar(      
       removeMargins: true,
       notchColor: Colors.white,
-      elevation: 0,
+      elevation: 0,      
       color: Colors.white,
       bottomBarWidth: MediaQuery.of(context).size.width,
       bottomBarHeight: height * 0.1,

@@ -14,14 +14,14 @@ class GroceryModel {
   static const dropTable = 'DROP TABLE IF EXISTS $tableName';
   static const selectAll = 'SELECT * FROM $tableName';    
 
-  int id;
+  int? id;
   final String itemName;
   final num itemPrice; // num
   final int totalQuantity;
   final int usedQuantity;
   final IconData icon;
   GroceryModel({
-    this.id = 0,
+    this.id,
     required this.itemName,
     required this.itemPrice,
     required this.totalQuantity,
@@ -36,8 +36,10 @@ class GroceryModel {
     int? totalQuantity,
     IconData? icon,
     int? usedQuantity,
+    int? id,
   }) {
     return GroceryModel(
+      id: id ?? this.id,
       itemName: itemName ?? this.itemName,
       itemPrice: itemPrice ?? this.itemPrice,
       totalQuantity: totalQuantity ?? this.totalQuantity,
@@ -48,7 +50,7 @@ class GroceryModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      colId : null, // Null so that sqlite automatically handles this id
+      colId : id, // Null so that sqlite automatically handles this id
       colItemName : itemName,
       colItemPrice : itemPrice,
       colTotalQuantity : totalQuantity,
