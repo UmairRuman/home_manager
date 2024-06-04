@@ -15,20 +15,19 @@ class ProfilePage extends ConsumerWidget {
   static const pageAddress = '/profilePage';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var controller = ref.read(profilePageProvider.notifier);
-    return Scaffold(
+    return const Scaffold(
       body: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/images/textureBackgroundTwo.jpg'),
               fit: BoxFit.cover,
               opacity: 0.5),
         ),
         child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: controller.passwordFormKey,
-              child: const Column(
+          child: Form(
+            // key: controller.passwordFormKey,
+            child: SingleChildScrollView(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

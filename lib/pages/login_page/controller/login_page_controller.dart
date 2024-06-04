@@ -28,9 +28,10 @@ class LoginPageController extends Notifier<LoginPageState> {
       log('form get validated');
       sharedData.setBool(
           SharedPreferencesConstant.kAccountCreatedButLogout, false);
+      sharedData.setString(SharedPreferencesConstant.kSharedPreferenceUsernameKey, usernameController.text);
       usernameController.text = '';
       passwordController.text = '';
-      Navigator.popAndPushNamed(context, HomePage.pageAddress);
+      Navigator.pushReplacementNamed(context, HomePage.pageAddress);
     }
   }
 

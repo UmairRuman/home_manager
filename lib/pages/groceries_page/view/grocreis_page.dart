@@ -13,19 +13,22 @@ class GroceryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) => ref.read(groceriesProvider.notifier).fetchList());
+    SchedulerBinding.instance.addPostFrameCallback(
+        (timeStamp) => ref.read(groceriesProvider.notifier).fetchList());
     final Size(:width, :height) = MediaQuery.sizeOf(context);
-    return Scaffold(
-      body: Center(
-        child: SizedBox.expand(
-          child: Stack(
-            children: [
-              const GroceryBodyWidget(),
-              Positioned(
-                  bottom: height * _buttonSpacingFromBottom,
-                  right: width * _buttonSpacingFromRight,
-                  child: const AddNewItemButton())
-            ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: SizedBox.expand(
+            child: Stack(
+              children: [
+                const GroceryBodyWidget(),
+                Positioned(
+                    bottom: height * _buttonSpacingFromBottom,
+                    right: width * _buttonSpacingFromRight,
+                    child: const AddNewItemButton())
+              ],
+            ),
           ),
         ),
       ),

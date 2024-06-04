@@ -22,22 +22,24 @@ class HomePage extends ConsumerWidget {
     var controller = ref.read(homePageProvider.notifier);
     ref.watch(homePageProvider);
 
-    return Scaffold(
-      body: Stack(alignment: Alignment.bottomCenter, children: [
-        Builder(
-          builder: (context) {
-            return switch (controller.currentIndex) {
-              _firstPageIndex => const OverviewPage(),
-              _secondPageIndex => const GroceryPage(),
-              _thirdPageIndex => const WeatherPage(),
-              _fourthPageIndex => const UtilityPage(),
-              _fifthPageIndex => const ProfilePage(),
-              _ => const ErrorPage(),
-            };
-          },
-        ),
-        const HomePageBottomNavigationBar(),
-      ]),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(alignment: Alignment.bottomCenter, children: [
+          Builder(
+            builder: (context) {
+              return switch (controller.currentIndex) {
+                _firstPageIndex => const OverviewPage(),
+                _secondPageIndex => const GroceryPage(),
+                _thirdPageIndex => const WeatherPage(),
+                _fourthPageIndex => const UtilityPage(),
+                _fifthPageIndex => const ProfilePage(),
+                _ => const ErrorPage(),
+              };
+            },
+          ),
+          const HomePageBottomNavigationBar(),
+        ]),
+      ),
     );
   }
 }

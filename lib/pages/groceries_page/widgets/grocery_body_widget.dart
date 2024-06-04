@@ -14,7 +14,8 @@ class GroceryBodyWidget extends ConsumerWidget {
       Builder(builder: (context) {
         if(state is GroceryInitialState){
       return ListView();
-    }else if(state is GroceryLoadingState){
+    }else if(state is GroceryLoadingState || state is GroceryUpdateDialogState){
+      // Returning listview with cahced list just to igonre these states
       return GroceriesList(groceries: ref.read(groceriesProvider.notifier).groceries);      
     }else if(state is GroceryLoadedState){
       return GroceriesList(groceries: state.list);

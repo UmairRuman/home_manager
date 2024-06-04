@@ -34,12 +34,12 @@ class UtiltityBillItem {
   static const createTable = 'CREATE TABLE IF NOT EXISTS $tableName ( $colId INTEGER PRIMARY KEY , $colBillType TEXT , $colPaidAmount REAL , $colDateTime INTEGER )';
   static const dropTable = 'DROP TABLE IF EXISTS $tableName';
   static const selectAll = 'SELECT * FROM $tableName';
-  int id;
+  int? id;
   DateTime dateTime;
   String billType;
   double paidAmount;
   UtiltityBillItem({
-    this.id = 0,
+    this.id,
     required this.dateTime,
     required this.billType,
     required this.paidAmount,
@@ -62,7 +62,7 @@ class UtiltityBillItem {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      colId : null,
+      colId : id,
       colDateTime : dateTime.millisecondsSinceEpoch,
       colBillType : billType,
       colPaidAmount : paidAmount,

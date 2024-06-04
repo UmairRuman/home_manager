@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewExpenseItemDialog extends ConsumerWidget {
-  const AddNewExpenseItemDialog({super.key});
+  AddNewExpenseItemDialog({super.key});
   static const _dialogWidth = 0.85;
   static const _dialogHeight = 0.5;
   static const _dialogBorderRadius = 20.0;
@@ -20,15 +20,16 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
   static const _priceAndQuantityFieldError = 'Only Digits!';
   static const itemAddedText = 'Item added';
   static const totalBudgetNotSetText = 'Set total budget first';
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final double totalBudget = GetIt.I<SharedPreferences>()
+          .getDouble(SharedPreferencesConstant.kTotalBudget) ??
+      0.0;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Size(:width, :height) = MediaQuery.sizeOf(context);
     final quantityProvider = ref.read(groceriesProvider.notifier);
     const textStyle = TextStyle(color: Colors.white);
-    final double totalBudget = GetIt.I<SharedPreferences>()
-            .getDouble(SharedPreferencesConstant.kTotalBudget) ??
-        0.0;
+
     return Center(
       child: SizedBox(
         width: width * _dialogWidth,

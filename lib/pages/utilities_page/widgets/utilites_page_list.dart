@@ -15,8 +15,7 @@ class UtiiltiesPageList extends ConsumerWidget {
     var Size(:width) = MediaQuery.sizeOf(context);
     var controller = ref.read(utilityPageProvider.notifier);
     ref.watch(utilityPageProvider);
-    var listOfBills = controller.listOfItems;
-    // var listOfBills = DummyUtilitiesList.generate();
+    var listOfBills = controller.listOfItems; 
     return ListView.builder(
       itemCount: listOfBills.length,
       itemBuilder: (context, index) {

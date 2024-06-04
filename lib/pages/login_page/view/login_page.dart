@@ -14,7 +14,7 @@ class LoginPage extends ConsumerWidget {
     var controller = ref.read(logingPageProvider.notifier);
     final Size(:height, :width) = MediaQuery.sizeOf(context);
     return PopScope(
-      canPop: false,
+      canPop: true,
       child: Scaffold(
         body: DecoratedBox(
           decoration: const BoxDecoration(

@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/controller/utility_page_states.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/model/utility_bill_item.dart';
-import 'package:flutter_project_home_manager/pages/utilities_page/view/utility_page_dialog.dart';
+import 'package:flutter_project_home_manager/pages/utilities_page/widgets/utility_page_dialog.dart';
+import 'package:flutter_project_home_manager/services/database_services/local_db.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final utilityPageProvider =
@@ -19,7 +20,7 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
     'Cabel Bill',
     'Maintainance Bill',
     'Other Bill',
-  ];
+  ];  
 
   //returns a Icon according to bill catagory
   IconData iconAgainstBillCatogary(String billCatagory) {
@@ -44,6 +45,7 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
   final TextEditingController paymentController = TextEditingController();
   DateTime date = DateTime.now();
   late String billType;
+  LocalDB db = LocalDB();
 
   // date picker in dialog icon button click (dialog)
   updateDateTime(DateTime selectedDate) {
@@ -53,41 +55,33 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
   }
 
   // bill catogory drop down click (dialog)
-  onDropDownValueChange(String? value) {
-    log('catogory updated');
+  onDropDownValueChange(String? value) {    
     billType = value!;
-    state = UtilityPageDialogCatogoryUpdatedState();
-    log('STATE UPDATED');
+    state = UtilityPageDialogCatogoryUpdatedState();    
   }
 
   // add new bill click (dialog)
-  addItemToList(BuildContext dialogContext) {
-    log('add item to list button clicked');
-    if (dialogKey.currentState!.validate()) {
-      log('add item to list button validated successfully');
+  addItemToList(BuildContext dialogContext) async{
+    
+    if (dialogKey.currentState!.validate()) {    
       paidAmount = double.parse(paymentController.text);
-      listOfItems.add(UtiltityBillItem(
+      await db.insertUtilityBill(UtiltityBillItem(
           dateTime: date, billType: billType, paidAmount: paidAmount));
-      log('item added to list at ${listOfItems.length - 1} index');
+      listOfItems = await db.utilites();
       paymentController.text = '';
       billType = listOfBillCatogaries.first;
-      date = DateTime.now();
-      log('dialog values set to default');
+      date = DateTime.now();    
       Navigator.pop(dialogContext);
     }
-    state = UtilityPageAddItemState();
-    log('STATE UPDATED');
+    state = UtilityPageAddItemState();  
   }
 
   bool isDialogSubmited = false;
   int currentIndex = 0;
   // on list tile update button
-  listItemUpdate(BuildContext context, int index) {
-    currentIndex = index;
-    log('list Item update button clicked at index $index');
-
-    if (!isDialogSubmited) {
-      log('dialog showed to update values');
+  listItemUpdate(BuildContext context, int index) async{
+    currentIndex = index;    
+    if (!isDialogSubmited) {      
       billType = listOfItems[currentIndex].billType;
       date = listOfItems[currentIndex].dateTime;
       paidAmount = listOfItems[currentIndex].paidAmount;
@@ -97,25 +91,17 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
           dialogCallType: DialogCallType.udateExistingBill,
         ),
       );
-    } else if (dialogKey.currentState!.validate()) {
-      paidAmount = double.parse(paymentController.text);
-      log('paid ammount has been parsed');
-      listOfItems.removeAt(index);
-      log('item at index $index has been removed');
-      listOfItems.insert(
-          index,
-          UtiltityBillItem(
-              dateTime: date, billType: billType, paidAmount: paidAmount));
-      log(listOfItems.toString());
-      log('item at index $index has been added');
+    } else if (dialogKey.currentState?.validate() ?? false) {
+      paidAmount = double.parse(paymentController.text); 
+      var updatedBill = listOfItems[index].copyWith(dateTime: date , billType: billType,paidAmount: paidAmount);
+      await db.updateUtilityBill(updatedBill);
+      listOfItems = await db.utilites();      
       paymentController.text = '';
       billType = listOfBillCatogaries.first;
-      date = DateTime.now();
-      log('values set to default');
-      state = UtilityPageUpdateItemState();
-
-      log('STATE UPDATED');
+      date = DateTime.now();      
+      state = UtilityPageUpdateItemState();      
       Navigator.pop(context);
+      isDialogSubmited = false;
     }
   }
 
@@ -126,11 +112,17 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
   }
 
   // on list tile delete button
-  listItemDelete(BuildContext context, int index) {
+  listItemDelete(BuildContext context, int index) async{
     log(listOfItems.toString());
-    log('item delete button clicked at index $index');
-    listOfItems.removeAt(index);
+    var currentUtility = listOfItems[index];    
+    await db.deleteUtitliyBill(currentUtility);
+    listOfItems = await db.utilites();      
     state = UtilityPageRemoveItemState();
+  }
+
+  fetchUtilityBills() async{    
+    listOfItems = await db.utilites();     
+    state = UtilityPageAddItemState(); 
   }
 
   @override
