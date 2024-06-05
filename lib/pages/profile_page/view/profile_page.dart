@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_home_manager/pages/profile_page/controller/profile_page_controller.dart';
 import 'package:flutter_project_home_manager/pages/profile_page/widgets/delete_account_button.dart';
 import 'package:flutter_project_home_manager/pages/profile_page/widgets/logout_button.dart';
 import 'package:flutter_project_home_manager/pages/profile_page/widgets/password_key_reset_field.dart';
@@ -10,13 +9,23 @@ import 'package:flutter_project_home_manager/pages/profile_page/widgets/username
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfilePage extends ConsumerWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
   static const pageAddress = '/profilePage';
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var controller = ref.read(profilePageProvider.notifier);
+  ConsumerState<ProfilePage> createState() {
+    return _ProfilePageState();
+  }
+
+}
+
+  class _ProfilePageState extends ConsumerState<ProfilePage>{
+    final GlobalKey<FormState>  key = GlobalKey(debugLabel: 'profile');
+  @override
+  Widget build(BuildContext context) {   
     return Scaffold(
+      key: UniqueKey(),
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -26,7 +35,7 @@ class ProfilePage extends ConsumerWidget {
         ),
         child: Center(
           child: Form(
-            key: controller.passwordFormKey,
+            key: key,
             child: const SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,

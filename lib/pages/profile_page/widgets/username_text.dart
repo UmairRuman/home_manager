@@ -10,7 +10,7 @@ class UsernameTextProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var Size(:width) = MediaQuery.sizeOf(context);
     String username = GetIt.I<SharedPreferences>()
-        .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey)!;
+        .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey) ?? '';
     return Padding(
       padding: EdgeInsets.all(width * 0.05),
       child: RichText(

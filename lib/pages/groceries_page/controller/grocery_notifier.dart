@@ -130,6 +130,28 @@ class GrocceryNotifier extends Notifier<GroceryState> {
     controllerForItemQuantity.clear();
     controlllerForDropDownMenu.clear();
   }
+
+    Future<double> totalExpenseSum(double currentExpense) async {
+    var groceriesExpense = 0.0;
+    try {
+      var listOfGroceries = await db.groceries();
+      for (var element in listOfGroceries) {
+        groceriesExpense += (element.itemPrice * element.totalQuantity);
+      }
+    } catch (e) {      
+      log(e.toString());
+    }    
+    var utilitiesExpense = 0.0;
+    try {
+      var listOfBills = await db.utilites();
+      for (var element in listOfBills) {
+        utilitiesExpense += element.paidAmount;
+      }
+    } catch (e) {      
+      log(e.toString());
+    }
+    return groceriesExpense + utilitiesExpense + currentExpense;
+  }   
 }
 
 final groceriesProvider =

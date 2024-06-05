@@ -4,12 +4,15 @@ import 'package:flutter_project_home_manager/pages/signup_page/controller/signup
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ToLoginScreenButton extends ConsumerWidget {
-  const ToLoginScreenButton({super.key});
+  final GlobalKey<FormState> validationKey;
+  const ToLoginScreenButton({super.key , required this.validationKey,});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     onClick() {
-      ref.read(signupPageProvider.notifier).addUserOnClick(context);
+      if(validationKey.currentState?.validate() ?? false){
+        ref.read(signupPageProvider.notifier).addUserOnClick(context);
+      }
     }
 
     final size = MediaQuery.sizeOf(context);

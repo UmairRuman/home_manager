@@ -12,29 +12,34 @@ final signupPageProvider =
     NotifierProvider<SignUpPageController, void>(SignUpPageController.new);
 
 class SignUpPageController extends Notifier<void> {
-  GlobalKey<FormState> signupFromKey = GlobalKey<FormState>();
+  // GlobalKey<FormState> signupFromKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordHintController = TextEditingController();
   SharedPreferences? sharedPreferences;
   @override
-  void build() {}
+  void build() {
+    // ref.onDispose(usernameController.dispose);
+    // ref.onDispose(passwordController.dispose);
+    // ref.onDispose(passwordHintController.dispose);
+  }
 
-  addUserOnClick(var context) async {
-    if (signupFromKey.currentState!.validate()) {
+  addUserOnClick(var context) async {    
       sharedPreferences = await SharedPreferences.getInstance();
       sharedPreferences?.setString(
           SharedPreferencesConstant.kSharedPreferenceUsernameKey,
-          usernameController.text);
+          usernameController.text.trim());
       sharedPreferences?.setString(
           SharedPreferencesConstant.kSharedPreferencePasswordKey,
-          passwordController.text);
+          passwordController.text.trim());
       sharedPreferences?.setString(
           SharedPreferencesConstant.kSharedPreferencePasswordHintKey,
-          passwordHintController.text);
+          passwordHintController.text.trim());
       sharedPreferences?.setBool(
           SharedPreferencesConstant.kAccountCreatedButLogout, true);
       log('user signed in : ${usernameController.text}');
+      log('user signed in : ${passwordController.text}');
+      log('user signed in : ${passwordHintController.text}');
       Navigator.of(context).push(
         PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
@@ -44,7 +49,6 @@ class SignUpPageController extends Notifier<void> {
             return const LoginPage();
           },
         ),
-      );
-    }
+      );    
   }
 }

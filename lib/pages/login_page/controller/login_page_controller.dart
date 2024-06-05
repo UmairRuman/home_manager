@@ -8,13 +8,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final loginPageProvider = NotifierProvider<LoginPageController, LoginPageState>(
+final loginPageProvider = NotifierProvider.autoDispose<LoginPageController, LoginPageState>(
     LoginPageController.new);
 
-class LoginPageController extends Notifier<LoginPageState> {
+class LoginPageController extends AutoDisposeNotifier<LoginPageState> {
   TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController passwordController = TextEditingController();  
 
   // authentic username and password
   SharedPreferences sharedData = GetIt.I<SharedPreferences>();
@@ -23,36 +22,38 @@ class LoginPageController extends Notifier<LoginPageState> {
   // login button on click function
   loginButtonOnClick(BuildContext context) {
     log('log in button clicked');
-    if (formKey.currentState!.validate()) {
+   
       log('form get validated');
       sharedData.setBool(
           SharedPreferencesConstant.kAccountCreatedButLogout, false);
       sharedData.setString(
           SharedPreferencesConstant.kSharedPreferenceUsernameKey,
-          usernameController.text);
+          usernameController.text.trim());
       usernameController.text = '';
       passwordController.text = '';
       log('prefrences values updated');
-      Navigator.pushReplacementNamed(context, HomePage.pageAddress);
-    }
+      Navigator.pushNamed(context, HomePage.pageAddress);
+ 
   }
 
   // validator for username field
   String? validatorForUsernameField(String? value) {
-    username = sharedData
-        .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey);
+    // username = sharedData
+    //     .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey);
     if (value == '' && value == null) {
       return 'Required field is empty';
     } else if (username != value) {
-      'user not exists';
+      return 'user not exists';
     }
     return null;
   }
 
   String? validatorForPasswordField(String? value) {
-    password = sharedData
-        .getString(SharedPreferencesConstant.kSharedPreferencePasswordKey);
-    if (validatorForUsernameField(usernameController.text) != null) {
+    // username = sharedData
+    //     .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey);
+    // password = sharedData
+    //     .getString(SharedPreferencesConstant.kSharedPreferencePasswordKey);
+    if (username == null) {
       return '';
     } else if (value == null && value == '') {
       return 'field is empty';

@@ -5,13 +5,18 @@ import 'package:flutter_project_home_manager/pages/utilities_page/controller/uti
 import 'package:flutter_project_home_manager/pages/utilities_page/model/utility_bill_item.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/utility_page_dialog.dart';
 import 'package:flutter_project_home_manager/services/database_services/local_db.dart';
+import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final utilityPageProvider =
     NotifierProvider<UtilityPageController, UtilityPageStates>(
         UtilityPageController.new);
 
 class UtilityPageController extends Notifier<UtilityPageStates> {
+  static const totalBudgetNotSetText = 'Set total budget first';
+  static const budgetLimitExceed = 'Budget Limit Exceeds';
   List<String> listOfBillCatogaries = <String>[
     'Electricity Bill',
     'Gas Bill',
@@ -61,20 +66,71 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
   }
 
   // add new bill click (dialog)
-  addItemToList(BuildContext dialogContext) async{
-    
-    if (dialogKey.currentState!.validate()) {    
+  addItemToList(BuildContext dialogContext) async{    
+    if (dialogKey.currentState!.validate()) {          
       paidAmount = double.parse(paymentController.text);
-      await db.insertUtilityBill(UtiltityBillItem(
+      var expenseSum = await totalExpenseSum(paidAmount);
+      var preference = GetIt.I<SharedPreferences>();
+      double totalBudget = preference.getDouble(SharedPreferencesConstant.kTotalBudget) ?? 0.0;      
+      if(totalBudget > 0.0){
+        if(totalBudget >= expenseSum){
+        await db.insertUtilityBill(UtiltityBillItem(
           dateTime: date, billType: billType, paidAmount: paidAmount));
       listOfItems = await db.utilites();
       paymentController.text = '';
       billType = listOfBillCatogaries.first;
       date = DateTime.now();    
       Navigator.pop(dialogContext);
+      } else{
+        ScaffoldMessenger.of(dialogContext)
+                                ..clearSnackBars()
+                                ..showSnackBar(
+                                  SnackBar(
+                                      content: const Text(
+                                        budgetLimitExceed,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.blue.shade400),
+                                );
+      }     
+      }else{
+        ScaffoldMessenger.of(dialogContext)
+                                ..clearSnackBars()
+                                ..showSnackBar(
+                                  SnackBar(
+                                      content: const Text(
+                                        totalBudgetNotSetText,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.blue.shade400),
+                                );
+      }
     }
     state = UtilityPageAddItemState();  
   }
+
+  
+    Future<double> totalExpenseSum(double currentExpense) async {
+    var groceriesExpense = 0.0;
+    try {
+      var listOfGroceries = await db.groceries();
+      for (var element in listOfGroceries) {
+        groceriesExpense += (element.itemPrice * element.totalQuantity);
+      }
+    } catch (e) {      
+      log(e.toString());
+    }    
+    var utilitiesExpense = 0.0;
+    try {
+      var listOfBills = await db.utilites();
+      for (var element in listOfBills) {
+        utilitiesExpense += element.paidAmount;
+      }
+    } catch (e) {      
+      log(e.toString());
+    }
+    return groceriesExpense + utilitiesExpense + currentExpense;
+  }   
 
   bool isDialogSubmited = false;
   int currentIndex = 0;

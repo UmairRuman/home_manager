@@ -20,6 +20,7 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
   static const _priceAndQuantityFieldError = 'Only Digits!';
   static const itemAddedText = 'Item added';
   static const totalBudgetNotSetText = 'Set total budget first';
+  static const budgetLimitExceed = 'Budget Limit Exceeds';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final double totalBudget = GetIt.I<SharedPreferences>()
           .getDouble(SharedPreferencesConstant.kTotalBudget) ??
@@ -108,10 +109,13 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                   Expanded(
                       flex: 1,
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async{
                           if (formKey.currentState!.validate()) {
+                            double currentExpense = double.parse(quantityProvider.controllerForItemPrice.text) * double.parse(quantityProvider.controllerForItemQuantity.text);
+                            var expense = await quantityProvider.totalExpenseSum(currentExpense);
                             if (totalBudget > 0.0) {
-                              var model = GroceryModel(
+                              if(totalBudget >= expense){
+                                var model = GroceryModel(
                                   itemName: quantityProvider
                                       .controllerForItemName.text,
                                   itemPrice: int.parse(quantityProvider
@@ -133,6 +137,18 @@ class AddNewExpenseItemDialog extends ConsumerWidget {
                                       backgroundColor: Colors.blue.shade400),
                                 );
                               Navigator.of(context).pop();
+                              }else{
+                                ScaffoldMessenger.of(context)
+                                ..clearSnackBars()
+                                ..showSnackBar(
+                                  SnackBar(
+                                      content: const Text(
+                                        budgetLimitExceed,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.blue.shade400),
+                                );
+                              }                          
                             } else {
                               ScaffoldMessenger.of(context)
                                 ..clearSnackBars()

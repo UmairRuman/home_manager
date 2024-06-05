@@ -17,7 +17,7 @@ final profilePageProvider =
         ProfilePageController.new);
 
 class ProfilePageController extends Notifier<ProfilePageState> {
-  GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
+  // GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
   TextEditingController resetPasswordController = TextEditingController();
   TextEditingController resetPasswordHintController = TextEditingController();
   var sharedPreferences = GetIt.I<SharedPreferences>();
@@ -28,15 +28,15 @@ class ProfilePageController extends Notifier<ProfilePageState> {
 
   onUpdatePasswordButton(BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      if (passwordFormKey.currentState!.validate()) {
+      // if (passwordFormKey.currentState!.validate()) {
         log('password updated');
         sharedPreferences.setString(
             SharedPreferencesConstant.kSharedPreferencePasswordKey,
-            resetPasswordController.text);
+            resetPasswordController.text.trim());
 
         sharedPreferences.setString(
             SharedPreferencesConstant.kSharedPreferencePasswordHintKey,
-            resetPasswordHintController.text);
+            resetPasswordHintController.text.trim());
         resetPasswordController.text = '';
         resetPasswordHintController.text = '';
         ScaffoldMessenger.of(context).showSnackBar(
@@ -47,9 +47,9 @@ class ProfilePageController extends Notifier<ProfilePageState> {
               ),
               backgroundColor: Colors.blue),
         );
-      } else {
-        log('password not updated');
-      }
+      // } else {
+      //   log('password not updated');
+      // }
     });
   }
 

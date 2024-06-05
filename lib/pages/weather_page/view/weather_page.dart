@@ -19,8 +19,7 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
     with TickerProviderStateMixin {
   //constant values
   static const heading = 'Live Weather';
-  static const headingSpacingFromTop = 0.06;
-  static const buttonSpacingFromBottom = 0.15;
+  static const headingSpacingFromTop = 0.06; 
   static const inputFieldSpacingFormTop = 0.32;
   static const clear = 'Clear';
   static const rain = 'Rain';
@@ -136,9 +135,13 @@ class _WeatherLoadedWidgetState extends ConsumerState<WeatherPage>
                 top: height * inputFieldSpacingFormTop,
                 child: const WeatherInputField(),
               ),
-              Positioned(
-                  bottom: height * buttonSpacingFromBottom,
-                  child: GetWeatherButton(onBtnTap: _onBtnTap))
+              Positioned.fill(
+                  child: Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GetWeatherButton(onBtnTap: _onBtnTap),
+                      )))
             ],
           ),
         ),

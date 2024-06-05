@@ -7,7 +7,10 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginButton extends ConsumerWidget {
-  const LoginButton({super.key});
+  final GlobalKey<FormState> formkey;
+  const LoginButton({super.key , 
+  required this.formkey,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,9 +18,11 @@ class LoginButton extends ConsumerWidget {
     final size = MediaQuery.sizeOf(context);
 
     onClick() {
-      GetIt.I<SharedPreferences>()
+      if(formkey.currentState?.validate() ?? false){
+        GetIt.I<SharedPreferences>()
           .setBool(SharedPreferencesConstant.kAccountCreatedButLogout, false);
       controller.loginButtonOnClick(context);
+      }
     }
 
     return AppCommonButton(
