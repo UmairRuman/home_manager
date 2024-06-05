@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/model/utility_bill_item.dart';
@@ -40,7 +41,7 @@ class LocalDB {
     return noOfRowsAffected > 0;
   }
 
-  Future<bool> updateGrocery(GroceryModel grocery) async{
+  Future<bool> updateGrocery(GroceryModel grocery) async {
     final db = await database;
     int noOfRowsAffected = await db.update(
       GroceryModel.tableName,
@@ -48,7 +49,7 @@ class LocalDB {
       where: '${GroceryModel.colId} = ?',
       whereArgs: [
         grocery.id.toString(),
-      ],      
+      ],
     );
     return noOfRowsAffected > 0;
   }
@@ -65,10 +66,14 @@ class LocalDB {
     return noOfRowsAffected > 0;
   }
 
-  Future<List<GroceryModel>> groceries() async{
+  Future<List<GroceryModel>> groceries() async {
     final db = await database;
     final listOfMaps = await db.query(GroceryModel.tableName);
-    return listOfMaps.map((map) => GroceryModel.fromMap(map),).toList();
+    return listOfMaps
+        .map(
+          (map) => GroceryModel.fromMap(map),
+        )
+        .toList();
   }
 
   Future<bool> insertUtilityBill(UtiltityBillItem utilityBill) async {
@@ -78,7 +83,7 @@ class LocalDB {
     return noOfRowsAffected > 0;
   }
 
-  Future<bool> deleteUtitliyBill(UtiltityBillItem utilityBill) async{
+  Future<bool> deleteUtitliyBill(UtiltityBillItem utilityBill) async {
     final db = await database;
     int noOfRowsAffected = await db.delete(
       UtiltityBillItem.tableName,
@@ -90,7 +95,7 @@ class LocalDB {
     return noOfRowsAffected > 0;
   }
 
-  Future<bool> updateUtilityBill(UtiltityBillItem utilityBill) async{
+  Future<bool> updateUtilityBill(UtiltityBillItem utilityBill) async {
     final db = await database;
     int noOfRowsAffected = await db.update(
       UtiltityBillItem.tableName,
@@ -103,9 +108,47 @@ class LocalDB {
     return noOfRowsAffected > 0;
   }
 
-  Future<List<UtiltityBillItem>> utilites() async{
+  Future<List<UtiltityBillItem>> utilites() async {
     final db = await database;
     final listOfMaps = await db.query(UtiltityBillItem.tableName);
-    return listOfMaps.map((map) => UtiltityBillItem.fromMap(map),).toList();
+    return listOfMaps
+        .map(
+          (map) => UtiltityBillItem.fromMap(map),
+        )
+        .toList();
+  }
+
+  Future<bool> deleteAllGroceries() async {
+    final db = await database;
+    final totalGroceries = await groceries();
+    int numberOfRowsAffected = 0;
+    for (var i = 0; i < totalGroceries.length; i++) {
+      numberOfRowsAffected = await db.delete(
+        GroceryModel.tableName,
+        where: '${GroceryModel.colId} = ?',
+        whereArgs: [
+          totalGroceries[i].id.toString(),
+        ],
+      );
+    }
+    log('$numberOfRowsAffected');
+    return numberOfRowsAffected >= 0;
+  }
+
+  Future<bool> deleteAllUtitlities() async {
+    final db = await database;
+    final totalUtilities = await utilites();
+    int numberOfRowsAffected = 0;
+    for (var i = 0; i < totalUtilities.length; i++) {
+      numberOfRowsAffected = await db.delete(
+        UtiltityBillItem.tableName,
+        where: '${UtiltityBillItem.colId} = ?',
+        whereArgs: [
+          totalUtilities[i].id.toString(),
+        ],
+      );
+      log('$numberOfRowsAffected');
+    }
+    return numberOfRowsAffected >= 0;
   }
 }

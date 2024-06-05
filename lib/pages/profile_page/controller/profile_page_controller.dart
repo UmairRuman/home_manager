@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_project_home_manager/pages/login_page/view/login_page.da
 import 'package:flutter_project_home_manager/pages/profile_page/controller/profile_page_state.dart';
 import 'package:flutter_project_home_manager/pages/profile_page/widgets/delete_account_button.dart';
 import 'package:flutter_project_home_manager/pages/signup_page/view/signup_page.dart';
+import 'package:flutter_project_home_manager/services/database_services/local_db.dart';
 import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -17,10 +20,13 @@ final profilePageProvider =
         ProfilePageController.new);
 
 class ProfilePageController extends Notifier<ProfilePageState> {
+  static const passwordUpdated = 'Password updated';
+  static const accountLogedOut = 'Account loged out';
   // GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
   TextEditingController resetPasswordController = TextEditingController();
   TextEditingController resetPasswordHintController = TextEditingController();
   var sharedPreferences = GetIt.I<SharedPreferences>();
+  final LocalDB _db = LocalDB();
   @override
   ProfilePageState build() {
     return ProfilePageInitialState();
@@ -29,24 +35,25 @@ class ProfilePageController extends Notifier<ProfilePageState> {
   onUpdatePasswordButton(BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       // if (passwordFormKey.currentState!.validate()) {
-        log('password updated');
-        sharedPreferences.setString(
-            SharedPreferencesConstant.kSharedPreferencePasswordKey,
-            resetPasswordController.text.trim());
+      log('password updated');
+      sharedPreferences.setString(
+          SharedPreferencesConstant.kSharedPreferencePasswordKey,
+          resetPasswordController.text.trim());
 
-        sharedPreferences.setString(
-            SharedPreferencesConstant.kSharedPreferencePasswordHintKey,
-            resetPasswordHintController.text.trim());
-        resetPasswordController.text = '';
-        resetPasswordHintController.text = '';
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                'password updated',
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.blue),
-        );
+      sharedPreferences.setString(
+          SharedPreferencesConstant.kSharedPreferencePasswordHintKey,
+          resetPasswordHintController.text.trim());
+      resetPasswordController.text = '';
+      resetPasswordHintController.text = '';
+      FocusManager.instance.primaryFocus!.unfocus();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+              passwordUpdated,
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.blue),
+      );
       // } else {
       //   log('password not updated');
       // }
@@ -59,7 +66,7 @@ class ProfilePageController extends Notifier<ProfilePageState> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
           content: Text(
-            'account logout',
+            accountLogedOut,
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.red),
@@ -76,7 +83,7 @@ class ProfilePageController extends Notifier<ProfilePageState> {
     );
   }
 
-  deleteDialogButton(BuildContext context) {
+  deleteDialogButton(BuildContext context) async {
     GetIt.I<SharedPreferences>()
         .remove(SharedPreferencesConstant.kSharedPreferenceUsernameKey);
     GetIt.I<SharedPreferences>()
@@ -85,7 +92,15 @@ class ProfilePageController extends Notifier<ProfilePageState> {
         .remove(SharedPreferencesConstant.kSharedPreferencePasswordHintKey);
     GetIt.I<SharedPreferences>()
         .remove(SharedPreferencesConstant.kAccountCreatedButLogout);
-    log('user is deleted');
-    Navigator.popAndPushNamed(context, SignupPage.pageAddress);
+    GetIt.I<SharedPreferences>().remove(SharedPreferencesConstant.kTotalBudget);
+    resetPasswordController.clear();
+    resetPasswordHintController.clear();
+    //delete all data from tables
+    if (await _db.deleteAllGroceries() && await _db.deleteAllUtitlities()) {
+      log('user is deleted');
+      Navigator.popAndPushNamed(context, SignupPage.pageAddress);
+    } else {
+      log('user not deleted');
+    }
   }
 }

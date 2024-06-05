@@ -8,12 +8,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final loginPageProvider = NotifierProvider.autoDispose<LoginPageController, LoginPageState>(
-    LoginPageController.new);
+final loginPageProvider =
+    NotifierProvider.autoDispose<LoginPageController, LoginPageState>(
+        LoginPageController.new);
 
 class LoginPageController extends AutoDisposeNotifier<LoginPageState> {
   TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();  
+  TextEditingController passwordController = TextEditingController();
 
   // authentic username and password
   SharedPreferences sharedData = GetIt.I<SharedPreferences>();
@@ -22,18 +23,16 @@ class LoginPageController extends AutoDisposeNotifier<LoginPageState> {
   // login button on click function
   loginButtonOnClick(BuildContext context) {
     log('log in button clicked');
-   
-      log('form get validated');
-      sharedData.setBool(
-          SharedPreferencesConstant.kAccountCreatedButLogout, false);
-      sharedData.setString(
-          SharedPreferencesConstant.kSharedPreferenceUsernameKey,
-          usernameController.text.trim());
-      usernameController.text = '';
-      passwordController.text = '';
-      log('prefrences values updated');
-      Navigator.pushNamed(context, HomePage.pageAddress);
- 
+
+    log('form get validated');
+    sharedData.setBool(
+        SharedPreferencesConstant.kAccountCreatedButLogout, false);
+    sharedData.setString(SharedPreferencesConstant.kSharedPreferenceUsernameKey,
+        usernameController.text.trim());
+    usernameController.text = '';
+    passwordController.text = '';
+    log('prefrences values updated');
+    Navigator.pushNamed(context, HomePage.pageAddress);
   }
 
   // validator for username field
@@ -53,12 +52,14 @@ class LoginPageController extends AutoDisposeNotifier<LoginPageState> {
     //     .getString(SharedPreferencesConstant.kSharedPreferenceUsernameKey);
     // password = sharedData
     //     .getString(SharedPreferencesConstant.kSharedPreferencePasswordKey);
+    var passwordHint = sharedData
+        .getString(SharedPreferencesConstant.kSharedPreferencePasswordHintKey);
     if (username == null) {
       return '';
     } else if (value == null && value == '') {
       return 'field is empty';
     } else if (value != password) {
-      return 'password is not correct';
+      return 'password is not correct, hint : $passwordHint';
     } else {
       return null;
     }
