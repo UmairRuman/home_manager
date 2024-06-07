@@ -12,10 +12,10 @@ class UpdateDeleteButton extends ConsumerWidget {
     return ElevatedButton(
         onPressed: onBtnTap,
         style: ButtonStyle(
-          elevation: MaterialStatePropertyAll(height * 0.1),
-          surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
+          elevation: WidgetStatePropertyAll(height * 0.1),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.white),
           textStyle:
-              MaterialStatePropertyAll(TextStyle(color: Colors.blue.shade400)),
+              WidgetStatePropertyAll(TextStyle(color: Colors.blue.shade400)),
         ),
         child: Text(
           btnText,

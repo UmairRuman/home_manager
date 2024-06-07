@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/controller/grocery_notifier.dart';
 import 'package:flutter_project_home_manager/pages/groceries_page/model/grocery_model.dart';

@@ -1,5 +1,6 @@
 import 'dart:developer';
-
+import 'package:flutter_project_home_manager/services/notification_services/local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flutter/material.dart';
 import 'package:flutter_project_home_manager/pages/home_page/view/home_page.dart';
 
@@ -12,26 +13,17 @@ import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await LocalNotifications().initialize();
+  tz.initializeTimeZones();
   log('initial widget binding initialized');
   GetIt.I.registerSingleton<SharedPreferences>(
     await SharedPreferences.getInstance(),
   );
 
-  // GetIt.I.registerSingleton<Database>(
-  //   await openDatabase(
-  //     join(await getDatabasesPath(), 'budget_app.db'),
-  //     version: 1,
-  //     onCreate: (db, version) {
-  //      db.execute('');
-  //     },
-  //   ),
-  // );
+ 
   log('shared preferences insatnce initialized');
   SharedPreferences shared = GetIt.I<SharedPreferences>();
 

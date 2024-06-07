@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:flutter_project_home_manager/pages/utilities_page/controller/utility_page_controller.dart';
 
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/add_button_in_dialog.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/date_picker_dialog.dart';
@@ -6,15 +9,18 @@ import 'package:flutter_project_home_manager/pages/utilities_page/widgets/dialog
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/drop_down_menu_button.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/payment_text_form_field.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/update_button_in_dialog.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum DialogCallType { addNewBill, udateExistingBill }
-
-class UtiltiyPageDialog extends StatelessWidget {
+class UtiltiyPageDialog extends ConsumerWidget {
   final DialogCallType dialogCallType;
 
   const UtiltiyPageDialog({super.key, required this.dialogCallType});
   @override
-  Widget build(BuildContext context) {
+  
+
+  Widget build(BuildContext context, WidgetRef ref) {
+    var notifier = ref.read(utilityPageProvider.notifier);
     var Size(:height, :width) = MediaQuery.sizeOf(context);
     return Center(
       child: SizedBox(
@@ -46,16 +52,50 @@ class UtiltiyPageDialog extends StatelessWidget {
                 const Spacer(flex: 4),
                 Expanded(
                     flex: 8,
-                    child: Builder(builder: (context) {
-                      return switch (dialogCallType) {
-                        DialogCallType.addNewBill =>
-                          AddItemDialogButton(dialogContext: context),
-                        DialogCallType.udateExistingBill =>
-                          UpdateItemDialogButton(
-                            dialogContext: context,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Builder(builder: (context) {
+                          return switch (dialogCallType) {
+                            DialogCallType.addNewBill =>
+                              AddItemDialogButton(dialogContext: context),
+                            DialogCallType.udateExistingBill =>
+                              UpdateItemDialogButton(
+                                dialogContext: context,
+                              ),
+                          };
+                        }),
+                        InkWell(
+                          onTap: () async {
+                            var dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now()
+                                    .add(const Duration(days: 3645)));
+                            var time = await showTimePicker(                                
+                                context: context,
+                                initialTime:
+                                    const TimeOfDay(hour: 12, minute: 00));
+                            if (dateTime != null) {
+                              var updatedDate = dateTime.copyWith(
+                                  hour: time?.hour ?? 12,
+                                  minute: time?.minute ?? 00);
+                              notifier.scheduleNotification(updatedDate);
+                            }
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                child: Icon(
+                                  Icons.notification_add,
+                                  color: Colors.white,
+                                )),
                           ),
-                      };
-                    })),
+                        ),
+                      ],
+                    )),
                 const Spacer(flex: 2),
               ],
             ),

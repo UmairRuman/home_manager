@@ -21,7 +21,7 @@ class AppCommonButton extends StatelessWidget {
         onPressed: onClick,
         style: ButtonStyle(
           
-          backgroundColor: MaterialStatePropertyAll(backgroundColor),
+          backgroundColor: WidgetStatePropertyAll(backgroundColor),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

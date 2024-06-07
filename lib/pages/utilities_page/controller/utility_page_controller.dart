@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_project_home_manager/pages/utilities_page/controller/uti
 import 'package:flutter_project_home_manager/pages/utilities_page/model/utility_bill_item.dart';
 import 'package:flutter_project_home_manager/pages/utilities_page/widgets/utility_page_dialog.dart';
 import 'package:flutter_project_home_manager/services/database_services/local_db.dart';
+import 'package:flutter_project_home_manager/services/notification_services/local_notifications.dart';
 import 'package:flutter_project_home_manager/utils/shared_prefernces_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -25,7 +28,7 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
     'Cabel Bill',
     'Maintainance Bill',
     'Other Bill',
-  ];  
+  ];
 
   //returns a Icon according to bill catagory
   IconData iconAgainstBillCatogary(String billCatagory) {
@@ -46,6 +49,7 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
 
   // data members for dialog
   GlobalKey<FormState> dialogKey = GlobalKey<FormState>();
+  LocalNotifications notifications = LocalNotifications();
   double paidAmount = 0.0;
   final TextEditingController paymentController = TextEditingController();
   DateTime date = DateTime.now();
@@ -60,84 +64,92 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
   }
 
   // bill catogory drop down click (dialog)
-  onDropDownValueChange(String? value) {    
+  onDropDownValueChange(String? value) {
     billType = value!;
-    state = UtilityPageDialogCatogoryUpdatedState();    
+    state = UtilityPageDialogCatogoryUpdatedState();
+  }
+
+  scheduleNotification(DateTime dateTime) async{
+    if(dialogKey.currentState?.validate() ?? false){
+      await LocalNotifications().requestPermission();
+      notifications.scheduleNotification(billType,
+        'Your Bill of Rs ${paymentController.text} is pending', dateTime);
+    }
   }
 
   // add new bill click (dialog)
-  addItemToList(BuildContext dialogContext) async{    
-    if (dialogKey.currentState!.validate()) {          
+  addItemToList(BuildContext dialogContext) async {
+    if (dialogKey.currentState!.validate()) {
       paidAmount = double.parse(paymentController.text);
       var expenseSum = await totalExpenseSum(paidAmount);
       var preference = GetIt.I<SharedPreferences>();
-      double totalBudget = preference.getDouble(SharedPreferencesConstant.kTotalBudget) ?? 0.0;      
-      if(totalBudget > 0.0){
-        if(totalBudget >= expenseSum){
-        await db.insertUtilityBill(UtiltityBillItem(
-          dateTime: date, billType: billType, paidAmount: paidAmount));
-      listOfItems = await db.utilites();
-      paymentController.text = '';
-      billType = listOfBillCatogaries.first;
-      date = DateTime.now();    
-      Navigator.pop(dialogContext);
-      } else{
+      double totalBudget =
+          preference.getDouble(SharedPreferencesConstant.kTotalBudget) ?? 0.0;
+      if (totalBudget > 0.0) {
+        if (totalBudget >= expenseSum) {
+          await db.insertUtilityBill(UtiltityBillItem(
+              dateTime: date, billType: billType, paidAmount: paidAmount));
+          listOfItems = await db.utilites();
+          paymentController.text = '';
+          billType = listOfBillCatogaries.first;
+          date = DateTime.now();
+          Navigator.pop(dialogContext);
+        } else {
+          ScaffoldMessenger.of(dialogContext)
+            ..clearSnackBars()
+            ..showSnackBar(
+              SnackBar(
+                  content: const Text(
+                    budgetLimitExceed,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Colors.blue.shade400),
+            );
+        }
+      } else {
         ScaffoldMessenger.of(dialogContext)
-                                ..clearSnackBars()
-                                ..showSnackBar(
-                                  SnackBar(
-                                      content: const Text(
-                                        budgetLimitExceed,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Colors.blue.shade400),
-                                );
-      }     
-      }else{
-        ScaffoldMessenger.of(dialogContext)
-                                ..clearSnackBars()
-                                ..showSnackBar(
-                                  SnackBar(
-                                      content: const Text(
-                                        totalBudgetNotSetText,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Colors.blue.shade400),
-                                );
+          ..clearSnackBars()
+          ..showSnackBar(
+            SnackBar(
+                content: const Text(
+                  totalBudgetNotSetText,
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.blue.shade400),
+          );
       }
     }
-    state = UtilityPageAddItemState();  
+    state = UtilityPageAddItemState();
   }
 
-  
-    Future<double> totalExpenseSum(double currentExpense) async {
+  Future<double> totalExpenseSum(double currentExpense) async {
     var groceriesExpense = 0.0;
     try {
       var listOfGroceries = await db.groceries();
       for (var element in listOfGroceries) {
         groceriesExpense += (element.itemPrice * element.totalQuantity);
       }
-    } catch (e) {      
+    } catch (e) {
       log(e.toString());
-    }    
+    }
     var utilitiesExpense = 0.0;
     try {
       var listOfBills = await db.utilites();
       for (var element in listOfBills) {
         utilitiesExpense += element.paidAmount;
       }
-    } catch (e) {      
+    } catch (e) {
       log(e.toString());
     }
     return groceriesExpense + utilitiesExpense + currentExpense;
-  }   
+  }
 
   bool isDialogSubmited = false;
   int currentIndex = 0;
   // on list tile update button
-  listItemUpdate(BuildContext context, int index) async{
-    currentIndex = index;    
-    if (!isDialogSubmited) {      
+  listItemUpdate(BuildContext context, int index) async {
+    currentIndex = index;
+    if (!isDialogSubmited) {
       billType = listOfItems[currentIndex].billType;
       date = listOfItems[currentIndex].dateTime;
       paidAmount = listOfItems[currentIndex].paidAmount;
@@ -148,14 +160,15 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
         ),
       );
     } else if (dialogKey.currentState?.validate() ?? false) {
-      paidAmount = double.parse(paymentController.text); 
-      var updatedBill = listOfItems[index].copyWith(dateTime: date , billType: billType,paidAmount: paidAmount);
+      paidAmount = double.parse(paymentController.text);
+      var updatedBill = listOfItems[index]
+          .copyWith(dateTime: date, billType: billType, paidAmount: paidAmount);
       await db.updateUtilityBill(updatedBill);
-      listOfItems = await db.utilites();      
+      listOfItems = await db.utilites();
       paymentController.text = '';
       billType = listOfBillCatogaries.first;
-      date = DateTime.now();      
-      state = UtilityPageUpdateItemState();      
+      date = DateTime.now();
+      state = UtilityPageUpdateItemState();
       Navigator.pop(context);
       isDialogSubmited = false;
     }
@@ -168,17 +181,17 @@ class UtilityPageController extends Notifier<UtilityPageStates> {
   }
 
   // on list tile delete button
-  listItemDelete(BuildContext context, int index) async{
+  listItemDelete(BuildContext context, int index) async {
     log(listOfItems.toString());
-    var currentUtility = listOfItems[index];    
+    var currentUtility = listOfItems[index];
     await db.deleteUtitliyBill(currentUtility);
-    listOfItems = await db.utilites();      
+    listOfItems = await db.utilites();
     state = UtilityPageRemoveItemState();
   }
 
-  fetchUtilityBills() async{    
-    listOfItems = await db.utilites();     
-    state = UtilityPageAddItemState(); 
+  fetchUtilityBills() async {
+    listOfItems = await db.utilites();
+    state = UtilityPageAddItemState();
   }
 
   @override
