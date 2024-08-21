@@ -7,24 +7,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class HomePageBottomNavigationBar extends ConsumerStatefulWidget {
   const HomePageBottomNavigationBar({super.key});
 
-
   @override
   ConsumerState<HomePageBottomNavigationBar> createState() {
     return _HomePageBottomNavigationBarState();
   }
-  
-  }
-  // icon labels
+}
+// icon labels
 
-  class _HomePageBottomNavigationBarState extends ConsumerState<HomePageBottomNavigationBar>{
+class _HomePageBottomNavigationBarState
+    extends ConsumerState<HomePageBottomNavigationBar> {
+  late NotchBottomBarController controller;
 
-    late NotchBottomBarController controller;
-
-    @override
-  void initState() {    
+  @override
+  void initState() {
     super.initState();
     var notifier = ref.read(homePageProvider.notifier);
-    controller = NotchBottomBarController(index: notifier.currentIndex) ;
+    controller = NotchBottomBarController(index: notifier.currentIndex);
   }
 
   @override
@@ -36,16 +34,17 @@ class HomePageBottomNavigationBar extends ConsumerStatefulWidget {
   @override
   Widget build(BuildContext context) {
     var notifier = ref.read(homePageProvider.notifier);
-    var Size(:width, :height) = MediaQuery.sizeOf(context);    
-    return AnimatedNotchBottomBar(      
+    var Size(:width, :height) = MediaQuery.sizeOf(context);
+    return AnimatedNotchBottomBar(
       removeMargins: true,
       notchColor: Colors.white,
-      elevation: 0,      
+      elevation: 0,
       color: Colors.white,
       bottomBarWidth: MediaQuery.of(context).size.width,
       bottomBarHeight: height * 0.1,
       notchBottomBarController: controller,
-      onTap: (value) {notifier.onStateChange(value);
+      onTap: (value) {
+        notifier.onStateChange(value);
         controller.jumpTo(value);
       },
       bottomBarItems: BottomNavigationBarItems.listOfBottomBarItems,
